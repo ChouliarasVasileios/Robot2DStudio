@@ -1,5 +1,5 @@
 import numpy as np
-from RobotParams import DiffDriveParams
+from Robot.RobotParams import DiffDriveParams
 
 class Differential_Drive:
     
@@ -16,7 +16,10 @@ class Differential_Drive:
         self.r = params.r 
 
     def jacobian(self,x):
-        return self.r*np.array([[np.cos(x[2,0])/2,np.cos(x[2,0])/2],[np.sin(x[2,0])/2,np.sin(x[2,0])/2],[-1/self.s,1/self.s]])
+        return self.r * np.array([[ np.cos(x[2, 0])/2, np.cos(x[2, 0])/2],
+                                [np.sin(x[2, 0])/2, np.sin(x[2, 0])/2],
+                                [-1/self.s, 1/self.s]
+                                ])
 
     def diff_kinematics(self,x,u):        
-        return self.jacobian(x)@u
+        return self.jacobian(x) @ u

@@ -1,0 +1,20 @@
+{
+    "VisulationParams":
+    {
+        "title":"Differential Drive Robot Simulation",
+        "xlabel":"x-axis",
+        "ylabel":"y-axis",
+        "grid_on":true,
+        "xlim": [-3,3],
+        "ylim": [-3,3]
+
+    },
+    "DiffDriveParams":
+    {
+        "Name": "r2d2",
+        "N":3,
+        "M":2,
+        "s":0.75,
+        "r":0.25
+    }
+}

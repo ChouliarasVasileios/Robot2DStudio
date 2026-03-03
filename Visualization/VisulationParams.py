@@ -1,13 +1,19 @@
-import dataclasses
+from dataclasses import dataclass
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import Axes
 
-@dataclasses
+#TODO: Default arguments go at the end of dataclass
+def axes():
+    fig = plt.figure()
+    return fig.add_subplot(111)
+
+# Data Transfer Object for visualization
+@dataclass
 class VisulationParams:
-    axes :Axes = lambda fig = plt.figure() : fig.add_subplot(111)
     title :str # Title of matplot windown
     xlabel :str # Label of x ax
     ylabel :str # Label of y ax
     grid_on : bool # True to add grid on
     xlim :list[float] # List of 2 element, [min,max]
     ylim :list[float] # List of 2 element, [min,max]
+    _axes :Axes = axes()

@@ -5,6 +5,7 @@ from typing import Callable
 
 class Visualization:
 
+    #TODO : Make it to accept visualizationParams DTO
     def __init__(self,axes,title :str,xlabel :str, ylabel :str, xlim :list, ylim :list, grid_on :bool):
         
         # Set the axes
