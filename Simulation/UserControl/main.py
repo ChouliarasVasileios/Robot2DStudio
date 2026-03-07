@@ -7,6 +7,7 @@ from Visualization.visulization import Visualization
 from Simulation.utils.integrators import Integrator
 import numpy as np
 import matplotlib.patches as patches
+import matplotlib.pyplot as plt
 
 # diffDriveParams  :DiffDriveParams
 # visulationParams :VisulationParams
@@ -26,7 +27,7 @@ def Init():
     global visual
 
     DDR = Differential_Drive(diffDriveParams)
-    visual = Visualization(VisulationParams)
+    visual = Visualization(visulationParams)
 
 
 
@@ -36,6 +37,8 @@ def Loop():
     u_start = np.array([[0.,0.]]).T
 
     rect = patches.Rectangle((0.0,0.0),0.6,0.3,linewidth = 0.5,edgecolor = 'blue',facecolor ='blue')
+
+    visual.axes.add_patch(rect)
 
     # print(np.shape(x_start))
     # print(np.shape(u_start))
@@ -64,10 +67,10 @@ def Loop():
         print(x)
 
         functions = [
-            (visual.move_rectangle,(rect,x[0,0],x[1,0]))
+            (visual.move_rectangle,(rect,x[0,0],x[1,0],x[2,0]))
         ]
 
-        visual.update(functions)
+        visual.update(functions,0.05)
 
 
 def main():

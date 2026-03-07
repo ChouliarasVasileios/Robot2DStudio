@@ -1,33 +1,34 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+from Visualization.VisulationParams import VisulationParams
 from typing import Callable
+
 
 class Visualization:
 
-    #TODO : Make it to accept visualizationParams DTO
-    def __init__(self,axes,title :str,xlabel :str, ylabel :str, xlim :list, ylim :list, grid_on :bool):
+    def __init__(self,visulationParams:VisulationParams):
         
         # Set the axes
-        self.axes = axes
+        self.axes = visulationParams._axes
 
         # Adding a title at plot
-        self.axes.set_title(title)
+        self.axes.set_title(visulationParams.title)
         
         # Adding x label at plot
-        self.axes.set_xlabel(xlabel)
+        self.axes.set_xlabel(visulationParams.xlabel)
         
         # Adding y label at plot
-        self.axes.set_ylabel(ylabel)
+        self.axes.set_ylabel(visulationParams.ylabel)
         
         # Adding grid at plot
-        self.axes.grid(grid_on)
+        self.axes.grid(visulationParams.grid_on)
         
         # Adding x axes limits
-        self.axes.set_xlim(xlim)
+        self.axes.set_xlim(visulationParams.xlim)
         
         # Adding y axes limit
-        self.axes.set_ylim(ylim)
+        self.axes.set_ylim(visulationParams.ylim)
         
         # Turn on interactive mode
         plt.ion()
@@ -38,7 +39,7 @@ class Visualization:
         # Calling all the functions that need to re-draw in simulation
         for func,args in functions:
             func(*args)
-            # plt.draw()
+            plt.draw()
         plt.pause(step)
         
     
