@@ -1,53 +1,80 @@
 import keyboard
 from Simulation.Configuration import Configure
+from Robot.Robot import Robot
 from Robot.RobotParams import DiffDriveParams
 from Visualization.VisulationParams import VisulationParams
 from Robot.modeling import Differential_Drive
 from Visualization.visulization import Visualization
 from Simulation.utils.integrators import Integrator
+from dataclasses import dataclass
+from numpy import ndarray
 import numpy as np
 import matplotlib.patches as patches
-import matplotlib.pyplot as plt
 
-# diffDriveParams  :DiffDriveParams
-# visulationParams :VisulationParams
+from Services.PrintMessage.Result import Result
+from Services.PrintMessage.Warning import Warning
 
-DDR : Differential_Drive
-visual : Visualization
 
-def Init():
-    # global diffDriveParams 
-    # global visulationParams
+@dataclass
+class States:
+    x_start :ndarray
+    x_target :ndarray
 
-    # Loading the parameters to Data transfer objects
-    diffDriveParams = Configure.Get(DiffDriveParams)
-    visulationParams = Configure.Get(VisulationParams)
+@dataclass
+class Controls:
+    u_start :ndarray
+    u_target :ndarray
 
-    global DDR
-    global visual
+
+def LoadParams():
+    return {
+        "diffDriveParams" : Configure.Get(DiffDriveParams),
+        "visulationParams" : Configure.Get(VisulationParams)
+    }
+
+
+def InitSimulation(diffDriveParams : DiffDriveParams,
+                    visulationParams :VisulationParams):
 
     DDR = Differential_Drive(diffDriveParams)
+
+    print(repr(DDR))
+    exit(1)
     visual = Visualization(visulationParams)
 
-
-
-def Loop():
-
-    x_start = np.array([[0.,0.,0.]]).T
-    u_start = np.array([[0.,0.]]).T
-
+    # Add robot Graphics
     rect = patches.Rectangle((0.0,0.0),0.6,0.3,linewidth = 0.5,edgecolor = 'blue',facecolor ='blue')
-
     visual.axes.add_patch(rect)
+    
 
-    # print(np.shape(x_start))
-    # print(np.shape(u_start))
-    # print(np.shape(DDR.jacobian(x_start)@u_start))
+    # Add States - Controls
+    states = States(x_start = np.array([[0.,0.,0.]]).T
+                    ,x_target = None)
+    
+    controls = Controls(u_start = np.array([[0.,0.]]).T,
+                        u_target = None)
+    
+    return {
+        "robot" : DDR,
+        "visual" : visual,
+        "states" : states,
+        "controls" : controls,
+        "rect" : rect 
+    }
 
-    # exit(1)
+def SetUp():
+    params = LoadParams()
+    return InitSimulation(**params)
 
-    x = np.copy(x_start)
-    u = np.copy(u_start)
+
+def Loop(robot :Robot
+         ,visual:Visualization
+         ,states :States
+         ,controls :Controls
+         ,rect):
+
+    x = np.copy(states.x_start)
+    u = np.copy(controls.u_start)
     while True:
 
         if keyboard.is_pressed("w"):
@@ -62,7 +89,7 @@ def Loop():
         if keyboard.is_pressed("s"):
             u = u + np.array([[-0.5,-0.5]]).T
 
-        x = Integrator.ForwardEuler(x,u,DDR.diff_kinematics,0.05)
+        x = Integrator.ForwardEuler(x,u,robot.DifferentialKinematics,0.05)
         u = np.zeros_like(u)
         print(x)
 
@@ -74,11 +101,7 @@ def Loop():
 
 
 def main():
-    Init()
-    Loop()
-
-    # print(diffDriveParams)
-    # print(visulationParams)
+    Loop(**SetUp())
     
 
 if __name__ == "__main__":

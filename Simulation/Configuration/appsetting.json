@@ -16,5 +16,16 @@
         "M":2,
         "s":0.75,
         "r":0.25
+    },
+    "LoggerSettings":
+    {
+        "Directory": "Existing folder path",
+        "CaptureSettings":
+        {
+            "Erros": true,
+            "Warnings": true,
+            "Exceptions": true,
+            "ObjectStateFrequency": "Every timelapse of object that you want to capture in seconds, e.g the result state change in a trajectory optimization" 
+        }
     }
 }
