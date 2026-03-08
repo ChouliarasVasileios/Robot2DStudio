@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-from Visualization.VisulationParams import VisulationParams
+from Visualization.Base.VisulationParams import VisulationParams
 from typing import Callable
 
 

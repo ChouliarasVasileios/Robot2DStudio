@@ -1,10 +1,10 @@
 import keyboard
 from Simulation.Configuration import Configure
-from Robot.Robot import Robot
-from Robot.RobotParams import DiffDriveParams
-from Visualization.VisulationParams import VisulationParams
-from Robot.modeling import Differential_Drive
-from Visualization.visulization import Visualization
+from Robot.Base.Robot import Robot
+from Robot.Base.RobotParams import DiffDriveParams
+from Visualization.Base.VisulationParams import VisulationParams
+from Robot.Models.DifferentialDriveRobot import Differential_Drive
+from Visualization.Base.visulization import Visualization
 from Simulation.utils.integrators import Integrator
 from dataclasses import dataclass
 from numpy import ndarray
