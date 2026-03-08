@@ -4,7 +4,7 @@ from Robot.Base.Robot import Robot
 from Robot.Base.RobotParams import DiffDriveParams
 from Visualization.Base.VisulationParams import VisulationParams
 from Robot.Models.DifferentialDriveRobot import Differential_Drive
-from Visualization.Base.visulization import Visualization
+from Visualization.Base.VisulizationBase import Visualization
 from Simulation.utils.integrators import Integrator
 from dataclasses import dataclass
 from numpy import ndarray
