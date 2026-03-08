@@ -4,7 +4,8 @@ from Robot.Base.Robot import Robot
 from Robot.Base.RobotParams import DiffDriveParams
 from Visualization.Base.VisulationParams import VisulationParams
 from Robot.Models.DifferentialDriveRobot import Differential_Drive
-from Visualization.Base.VisulizationBase import Visualization
+# from Visualization.Base.Visulization import Visualization
+from Visualization.Models.DifferentialDriveRobot import DiffrentialDriveRobotVisual
 from Simulation.utils.integrators import Integrator
 from dataclasses import dataclass
 from numpy import ndarray
@@ -40,7 +41,7 @@ def InitSimulation(diffDriveParams : DiffDriveParams,
 
     print(repr(DDR))
     exit(1)
-    visual = Visualization(visulationParams)
+    visual = DiffrentialDriveRobotVisual(visulationParams)
 
     # Add robot Graphics
     rect = patches.Rectangle((0.0,0.0),0.6,0.3,linewidth = 0.5,edgecolor = 'blue',facecolor ='blue')
@@ -68,7 +69,7 @@ def SetUp():
 
 
 def Loop(robot :Robot
-         ,visual:Visualization
+         ,visual:DiffrentialDriveRobotVisual
          ,states :States
          ,controls :Controls
          ,rect):
@@ -93,11 +94,7 @@ def Loop(robot :Robot
         u = np.zeros_like(u)
         print(x)
 
-        functions = [
-            (visual.move_rectangle,(rect,x[0,0],x[1,0],x[2,0]))
-        ]
-
-        visual.update(functions,0.05)
+        visual.update()
 
 
 def main():
