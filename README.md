@@ -1,2 +1,2 @@
-# Differential-Drive-Robot
-This is a project that shows how to implement and control a Differential-Drive-Robot
+# Robot2DStudio
+This is a project to create a module that can run robot simulation in xy-plane, desing you own 2D robot, run model examples.
