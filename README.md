@@ -1,2 +1,2 @@
 # Robot2DStudio
-This is a project to create a module that can run robot simulation in xy-plane, desing you own 2D robot, run model examples.
+This is a project to create a module that can run robot simulation in xy-plane, desing you own 2D robot, run model examples...
