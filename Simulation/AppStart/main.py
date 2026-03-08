@@ -1,105 +1,63 @@
-import keyboard
+import matplotlib.patches as patches
+from typing import Callable,Any
+from dataclasses import dataclass
 from Simulation.Configuration import Configure
 from Robot.Base.Robot import Robot
-from Robot.Base.RobotParams import DiffDriveParams
+from Robot.Base.RobotParams import RobotParams
+from Visualization.Base.Visulization import Visualization
 from Visualization.Base.VisulationParams import VisulationParams
-from Robot.Models.DifferentialDriveRobot import Differential_Drive
-# from Visualization.Base.Visulization import Visualization
-from Visualization.Models.DifferentialDriveRobot import DiffrentialDriveRobotVisual
-from Simulation.utils.integrators import Integrator
-from dataclasses import dataclass
-from numpy import ndarray
-import numpy as np
-import matplotlib.patches as patches
-
-from Services.PrintMessage.Result import Result
-from Services.PrintMessage.Warning import Warning
 
 
 @dataclass
-class States:
-    x_start :ndarray
-    x_target :ndarray
+class RobotStudio:
+    robotParams :RobotParams
+    robot : Robot
 
 @dataclass
-class Controls:
-    u_start :ndarray
-    u_target :ndarray
+class VisualStudio:
+    visualParams : VisulationParams
+    visual :Visualization
 
 
-def LoadParams():
+def SetUp(Robot :RobotStudio):#,Visual :VisualStudio) -> dict[Robot,Visualization]:
+    robot = Robot.robot(Configure.Get(Robot.robotParams))
+    # visual = Visual.visual( Configure.Get(Visual.visualParams))
+    
+    #TODO: Add functionality of patches for a given robot
+
     return {
-        "diffDriveParams" : Configure.Get(DiffDriveParams),
-        "visulationParams" : Configure.Get(VisulationParams)
+        "robot" : robot,
+        # "visual" : visual,
     }
 
-
-def InitSimulation(diffDriveParams : DiffDriveParams,
-                    visulationParams :VisulationParams):
-
-    DDR = Differential_Drive(diffDriveParams)
-
-    print(repr(DDR))
-    exit(1)
-    visual = DiffrentialDriveRobotVisual(visulationParams)
-
-    # Add robot Graphics
-    rect = patches.Rectangle((0.0,0.0),0.6,0.3,linewidth = 0.5,edgecolor = 'blue',facecolor ='blue')
-    visual.axes.add_patch(rect)
+def Loop(robot :Robot,
+        #  visual:Visualization,
+         Init :Callable[[None],Any],
+         Step :Callable[[Any],None]):
     
+    params = Init()
 
-    # Add States - Controls
-    states = States(x_start = np.array([[0.,0.,0.]]).T
-                    ,x_target = None)
-    
-    controls = Controls(u_start = np.array([[0.,0.]]).T,
-                        u_target = None)
-    
-    return {
-        "robot" : DDR,
-        "visual" : visual,
-        "states" : states,
-        "controls" : controls,
-        "rect" : rect 
-    }
-
-def SetUp():
-    params = LoadParams()
-    return InitSimulation(**params)
-
-
-def Loop(robot :Robot
-         ,visual:DiffrentialDriveRobotVisual
-         ,states :States
-         ,controls :Controls
-         ,rect):
-
-    x = np.copy(states.x_start)
-    u = np.copy(controls.u_start)
     while True:
 
-        if keyboard.is_pressed("w"):
-            u = u + np.array([[0.5,0.5]]).T
+        Step(robot,**params)
 
-        if keyboard.is_pressed("a"):
-            u = u + np.array([[-0.3,+0.3]]).T
-
-        if keyboard.is_pressed("d"):
-            u = u + np.array([[0.3,-0.3]]).T
-            
-        if keyboard.is_pressed("s"):
-            u = u + np.array([[-0.5,-0.5]]).T
-
-        x = Integrator.ForwardEuler(x,u,robot.DifferentialKinematics,0.05)
-        u = np.zeros_like(u)
-        print(x)
-
-        visual.update()
+        # visual.render()
 
 
-def main():
-    Loop(**SetUp())
+def Robot2DStudioStart(Robot :RobotStudio,
+                       Visual :VisualStudio,
+                       SimulationInit :Callable[[None],Any],
+                       SimulationStep :Callable[[Any],None]):
+    
+    Loop(**SetUp(Robot),Init=SimulationInit,Step=SimulationStep)#,Visual))
+    print("here")
+
+
+
+
+# def main():
+#     Loop(**SetUp())
     
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()

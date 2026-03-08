@@ -1,6 +1,6 @@
 import numpy as np
 from Robot.Base.Robot import Robot
-from Robot.Base.RobotParams import DiffDriveParams
+from Robot.Models.DiffDriveParams import DiffDriveParams
 from Services.PrintMessage.Result import ResultString
 
 class Differential_Drive(Robot):
