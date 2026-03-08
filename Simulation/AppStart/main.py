@@ -39,7 +39,7 @@ def Loop(robot :Robot,
 
     while True:
 
-        Step(robot,**params)
+        params = Step(robot,**params)
 
         # visual.render()
 

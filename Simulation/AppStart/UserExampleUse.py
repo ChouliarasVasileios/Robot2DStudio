@@ -31,12 +31,14 @@ def SimulationStep(robot,x,u) -> bool:
     if keyboard.is_pressed("s"):
         u = u + np.array([[-0.5,-0.5]]).T
 
-        x = Integrator.ForwardEuler(x,u,robot.DifferentialKinematics,0.05)
-        u = np.zeros_like(u)
+    x = Integrator.ForwardEuler(x,u,robot.DifferentialKinematics,0.05)
+    u = np.zeros_like(u)
 
-    print(repr(robot))
-    # print(x)
+    # print(repr(robot))
+    print(x)
     # print(u)
+
+    return {"x":x,"u":u}
 
 
 
