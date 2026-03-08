@@ -1,6 +1,7 @@
 import matplotlib.patches as patches
 from typing import Callable,Any
 from dataclasses import dataclass
+from functools import partial
 from Simulation.Configuration import Configure
 from Robot.Base.Robot import Robot
 from Robot.Base.RobotParams import RobotParams
@@ -33,13 +34,15 @@ def SetUp(Robot :RobotStudio):#,Visual :VisualStudio) -> dict[Robot,Visualizatio
 def Loop(robot :Robot,
         #  visual:Visualization,
          Init :Callable[[None],Any],
-         Step :Callable[[Any],None]):
+         Step :Callable[[Any],Any]):
     
     params = Init()
 
+    StepWithRobot = partial(Step,robot)
+
     while True:
 
-        params = Step(robot,**params)
+        params = StepWithRobot(**params)
 
         # visual.render()
 
@@ -47,7 +50,7 @@ def Loop(robot :Robot,
 def Robot2DStudioStart(Robot :RobotStudio,
                        Visual :VisualStudio,
                        SimulationInit :Callable[[None],Any],
-                       SimulationStep :Callable[[Any],None]):
+                       SimulationStep :Callable[[Any],Any]):
     
     Loop(**SetUp(Robot),Init=SimulationInit,Step=SimulationStep)#,Visual))
     print("here")
