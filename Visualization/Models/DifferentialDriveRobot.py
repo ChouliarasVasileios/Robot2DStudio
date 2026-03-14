@@ -1,4 +1,5 @@
 import numpy as np
+from numpy import ndarray
 import matplotlib.patches as patches
 from Visualization.Base.Visulization import Visualization
 
@@ -7,29 +8,30 @@ class DiffrentialDriveRobotVisual(Visualization):
     def __init__(self, visulationParams):
         super().__init__(visulationParams)
     
-    def update(self):
-        patche = self.Patches.get(self.move_rectangle.__name__,None)
-        self.move_rectangle()
+    def update(self,x :ndarray):
+        self.move_rectangle(x)
 
-    def move_rectangle(self,rectangle :patches.Rectangle, x :float, y :float,radians :float):
+    def move_rectangle(self, x :ndarray):
     
         # x,y input is for the center,
         # so we need to calculate the left bottom coordinates
         
+        rectangle :patches.Rectangle = self.GetPatch("Rectangle") 
+
         width :float = rectangle.get_width()
         height :float = rectangle.get_height()
         
         # The x left bottom coordinate of the rectangle
-        x_left_bottom :float = x - (width/2)
+        x_left_bottom :float = x[0,0] - (width/2)
         
         # The y left bottom coordinate of the rectangle
-        y_left_bottom :float = y - (height/2)
+        y_left_bottom :float = x[1,0] - (height/2)
         
         # Setting the new position of rectangle
         rectangle.set_xy((x_left_bottom,y_left_bottom))
         
         # Transforming rand to degrees
-        degrees = radians*(180/np.pi)
+        degrees = x[2,0]*(180/np.pi)
 
         # Setting the angle of rectangle
         rectangle.set_angle(degrees)

@@ -6,7 +6,7 @@ from Simulation.Configuration import Configure
 from Robot.Base.Robot import Robot
 from Robot.Base.RobotParams import RobotParams
 from Visualization.Base.Visulization import Visualization
-from Visualization.Base.VisulationParams import VisulationParams
+from Visualization.Base.VisulationParams import VisulationParams,PatchParams
 
 
 @dataclass
@@ -20,31 +20,32 @@ class VisualStudio:
     visual :Visualization
 
 
-def SetUp(Robot :RobotStudio):#,Visual :VisualStudio) -> dict[Robot,Visualization]:
+def SetUp(Robot :RobotStudio,Visual:VisualStudio):
     robot = Robot.robot(Configure.Get(Robot.robotParams))
-    # visual = Visual.visual( Configure.Get(Visual.visualParams))
-    
-    #TODO: Add functionality of patches for a given robot
+    temp :VisulationParams = Configure.Get(Visual.visualParams)
+    print(type(temp.Patches[0]))
+    visualTEST = Visual.visual(Configure.Get(Visual.visualParams))
 
     return {
-        "robot" : robot,
-        # "visual" : visual,
+        "Robot" : robot,
+        "Visual" : visualTEST,
     }
 
-def Loop(robot :Robot,
-        #  visual:Visualization,
+def Loop(Robot :Robot,
+         Visual:Visualization,
          Init :Callable[[None],Any],
          Step :Callable[[Any],Any]):
-    
+
+    Visual.InitRender()    
     params = Init()
 
-    StepWithRobot = partial(Step,robot)
+    StepWithRobot = partial(Step,Robot)
 
     while True:
 
         params = StepWithRobot(**params)
 
-        # visual.render()
+        Visual.render(params["x"])
 
 
 def Robot2DStudioStart(Robot :RobotStudio,
@@ -52,9 +53,7 @@ def Robot2DStudioStart(Robot :RobotStudio,
                        SimulationInit :Callable[[None],Any],
                        SimulationStep :Callable[[Any],Any]):
     
-    Loop(**SetUp(Robot),Init=SimulationInit,Step=SimulationStep)#,Visual))
-    print("here")
-
+    Loop(**SetUp(Robot,Visual),Init=SimulationInit,Step=SimulationStep)
 
 
 

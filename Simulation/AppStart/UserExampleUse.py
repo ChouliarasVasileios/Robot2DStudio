@@ -19,30 +19,29 @@ def SimulationInit():
 
 def SimulationStep(robot,x,u) -> bool:
 
-    if keyboard.is_pressed("w"):
-        u = u + np.array([[0.5,0.5]]).T
+    if keyboard.is_pressed("up"):
+        u = u + np.array([[1.5,1.5]]).T
 
-    if keyboard.is_pressed("a"):
-        u = u + np.array([[-0.3,+0.3]]).T
+    if keyboard.is_pressed("left"):
+        u = u + np.array([[-1.3,+1.3]]).T
 
-    if keyboard.is_pressed("d"):
-        u = u + np.array([[0.3,-0.3]]).T
+    if keyboard.is_pressed("right"):
+        u = u + np.array([[1.3,-1.3]]).T
         
-    if keyboard.is_pressed("s"):
-        u = u + np.array([[-0.5,-0.5]]).T
+    if keyboard.is_pressed("down"):
+        u = u + np.array([[-1.5,-1.5]]).T
 
     x = Integrator.ForwardEuler(x,u,robot.DifferentialKinematics,0.05)
     u = np.zeros_like(u)
 
     # print(repr(robot))
-    print(x)
+    # print(x)
     # print(u)
 
     return {"x":x,"u":u}
 
 
 
-# if __name__ == "main":
 Robot2DStudioStart(Robot = RobotStudio(DiffDriveParams,Differential_Drive),
                     Visual = VisualStudio(VisulationParams,DiffrentialDriveRobotVisual),
                     SimulationInit = SimulationInit,
