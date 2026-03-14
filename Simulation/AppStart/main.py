@@ -1,108 +1,65 @@
-import keyboard
+import matplotlib.patches as patches
+from typing import Callable,Any
+from dataclasses import dataclass
+from functools import partial
 from Simulation.Configuration import Configure
 from Robot.Base.Robot import Robot
-from Robot.Base.RobotParams import DiffDriveParams
-from Visualization.Base.VisulationParams import VisulationParams
-from Robot.Models.DifferentialDriveRobot import Differential_Drive
-from Visualization.Base.visulization import Visualization
-from Simulation.utils.integrators import Integrator
-from dataclasses import dataclass
-from numpy import ndarray
-import numpy as np
-import matplotlib.patches as patches
-
-from Services.PrintMessage.Result import Result
-from Services.PrintMessage.Warning import Warning
+from Robot.Base.RobotParams import RobotParams
+from Visualization.Base.Visulization import Visualization
+from Visualization.Base.VisulationParams import VisulationParams,PatchParams
 
 
 @dataclass
-class States:
-    x_start :ndarray
-    x_target :ndarray
+class RobotStudio:
+    robotParams :RobotParams
+    robot : Robot
 
 @dataclass
-class Controls:
-    u_start :ndarray
-    u_target :ndarray
+class VisualStudio:
+    visualParams : VisulationParams
+    visual :Visualization
 
 
-def LoadParams():
+def SetUp(Robot :RobotStudio,Visual:VisualStudio):
+    robot = Robot.robot(Configure.Get(Robot.robotParams))
+    temp :VisulationParams = Configure.Get(Visual.visualParams)
+    print(type(temp.Patches[0]))
+    visualTEST = Visual.visual(Configure.Get(Visual.visualParams))
+
     return {
-        "diffDriveParams" : Configure.Get(DiffDriveParams),
-        "visulationParams" : Configure.Get(VisulationParams)
+        "Robot" : robot,
+        "Visual" : visualTEST,
     }
 
+def Loop(Robot :Robot,
+         Visual:Visualization,
+         Init :Callable[[None],Any],
+         Step :Callable[[Any],Any]):
 
-def InitSimulation(diffDriveParams : DiffDriveParams,
-                    visulationParams :VisulationParams):
+    Visual.InitRender()    
+    params = Init()
 
-    DDR = Differential_Drive(diffDriveParams)
+    StepWithRobot = partial(Step,Robot)
 
-    print(repr(DDR))
-    exit(1)
-    visual = Visualization(visulationParams)
-
-    # Add robot Graphics
-    rect = patches.Rectangle((0.0,0.0),0.6,0.3,linewidth = 0.5,edgecolor = 'blue',facecolor ='blue')
-    visual.axes.add_patch(rect)
-    
-
-    # Add States - Controls
-    states = States(x_start = np.array([[0.,0.,0.]]).T
-                    ,x_target = None)
-    
-    controls = Controls(u_start = np.array([[0.,0.]]).T,
-                        u_target = None)
-    
-    return {
-        "robot" : DDR,
-        "visual" : visual,
-        "states" : states,
-        "controls" : controls,
-        "rect" : rect 
-    }
-
-def SetUp():
-    params = LoadParams()
-    return InitSimulation(**params)
-
-
-def Loop(robot :Robot
-         ,visual:Visualization
-         ,states :States
-         ,controls :Controls
-         ,rect):
-
-    x = np.copy(states.x_start)
-    u = np.copy(controls.u_start)
     while True:
 
-        if keyboard.is_pressed("w"):
-            u = u + np.array([[0.5,0.5]]).T
+        params = StepWithRobot(**params)
 
-        if keyboard.is_pressed("a"):
-            u = u + np.array([[-0.3,+0.3]]).T
-
-        if keyboard.is_pressed("d"):
-            u = u + np.array([[0.3,-0.3]]).T
-            
-        if keyboard.is_pressed("s"):
-            u = u + np.array([[-0.5,-0.5]]).T
-
-        x = Integrator.ForwardEuler(x,u,robot.DifferentialKinematics,0.05)
-        u = np.zeros_like(u)
-        print(x)
-
-        functions = [
-            (visual.move_rectangle,(rect,x[0,0],x[1,0],x[2,0]))
-        ]
-
-        visual.update(functions,0.05)
+        Visual.render(params["x"])
 
 
-def main():
-    Loop(**SetUp())
+def Robot2DStudioStart(Robot :RobotStudio,
+                       Visual :VisualStudio,
+                       SimulationInit :Callable[[None],Any],
+                       SimulationStep :Callable[[Any],Any]):
+    
+    Loop(**SetUp(Robot,Visual),Init=SimulationInit,Step=SimulationStep)
+
+
+
+# def main():
+#     Loop(**SetUp())
     
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()

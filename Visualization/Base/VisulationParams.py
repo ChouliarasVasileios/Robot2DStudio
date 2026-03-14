@@ -1,11 +1,19 @@
 from dataclasses import dataclass
+from Simulation.Configuration import Configure
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import Axes
 
-#TODO: Default arguments go at the end of dataclass
+
+#TODO: INFO: Default arguments go at the end of dataclass
 def axes():
     fig = plt.figure()
     return fig.add_subplot(111)
+
+@dataclass
+class PatchParams:
+    applyToVisualFunction : str # The function that your patch apply to
+    patch :str # The patch that you want to pass as argument to your visual function
+    arguments :dict # The Kwarg argumentes that passed to the patch
 
 # Data Transfer Object for visualization
 @dataclass
@@ -16,4 +24,10 @@ class VisulationParams:
     grid_on : bool # True to add grid on
     xlim :list[float] # List of 2 element, [min,max]
     ylim :list[float] # List of 2 element, [min,max]
+    step :float # Simulation Step in sec e.g 0.05 sec
+    Patches : list[PatchParams] # A list of NameLess Objects that will mapped to PatchParam DTO
     _axes :Axes = axes()
+
+
+
+
