@@ -11,13 +11,14 @@ from Visualization.Base.VisulationParams import VisulationParams
 from Visualization.Models.DifferentialDriveRobot import DiffrentialDriveRobotVisual
 
 def SimulationInit():
-
+    x_target = np.array([[1.5,1.5,np.pi/4]]).T
     x = np.array([[0.,0.,0.]]).T
     u = np.array([[0.,0.]]).T
-    return {"x":x,"u":u}
+    error = np.ones_like(x)
+    return {"x":x,"u":u,"x_target":x_target,"error":error}
 
 
-def SimulationStep(robot,x,u) -> bool:
+def SimulationStep(robot,x,u,x_target,error,stop) -> bool:
 
     if keyboard.is_pressed("up"):
         u = u + np.array([[1.5,1.5]]).T
@@ -31,14 +32,22 @@ def SimulationStep(robot,x,u) -> bool:
     if keyboard.is_pressed("down"):
         u = u + np.array([[-1.5,-1.5]]).T
 
-    x = Integrator.ForwardEuler(x,u,robot.DifferentialKinematics,0.05)
+    if np.linalg.norm(error) < 17e-2:
+        stop = True
+
+    # TODO: INFO - Maybe Euler state is ahead of simulation state
+    # x = Integrator.ForwardEuler(x,u,robot.DifferentialKinematics,0.05)
+    x = Integrator.RK4(x,u,robot.DifferentialKinematics,0.05)
     u = np.zeros_like(u)
 
+    error = x - x_target
+
+    print(np.linalg.norm(error))
     # print(repr(robot))
-    # print(x)
+    # print(x[0,0])
     # print(u)
 
-    return {"x":x,"u":u}
+    return {"x":x,"u":u,"x_target":x_target,"error":error,"stop":stop}
 
 
 

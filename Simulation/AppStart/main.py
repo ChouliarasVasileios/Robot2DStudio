@@ -1,3 +1,4 @@
+import sys
 import matplotlib.patches as patches
 from typing import Callable,Any
 from dataclasses import dataclass
@@ -6,7 +7,7 @@ from Simulation.Configuration import Configure
 from Robot.Base.Robot import Robot
 from Robot.Base.RobotParams import RobotParams
 from Visualization.Base.Visulization import Visualization
-from Visualization.Base.VisulationParams import VisulationParams,PatchParams
+from Visualization.Base.VisulationParams import VisulationParams
 
 
 @dataclass
@@ -22,13 +23,11 @@ class VisualStudio:
 
 def SetUp(Robot :RobotStudio,Visual:VisualStudio):
     robot = Robot.robot(Configure.Get(Robot.robotParams))
-    temp :VisulationParams = Configure.Get(Visual.visualParams)
-    print(type(temp.Patches[0]))
-    visualTEST = Visual.visual(Configure.Get(Visual.visualParams))
+    visual = Visual.visual(Configure.Get(Visual.visualParams))
 
     return {
         "Robot" : robot,
-        "Visual" : visualTEST,
+        "Visual" : visual,
     }
 
 def Loop(Robot :Robot,
@@ -36,8 +35,10 @@ def Loop(Robot :Robot,
          Init :Callable[[None],Any],
          Step :Callable[[Any],Any]):
 
-    Visual.InitRender()    
-    params = Init()
+    Visual.InitRender()
+        
+    params :dict = Init()
+    params.update({"stop":False})
 
     StepWithRobot = partial(Step,Robot)
 
@@ -45,8 +46,14 @@ def Loop(Robot :Robot,
 
         params = StepWithRobot(**params)
 
-        Visual.render(params["x"])
+        if(params["stop"]):
+            break
 
+        Visual.Render(params["x"])
+
+    print("Exiting Robot2DStudio Bye! :)")
+    sys.exit(0)
+    
 
 def Robot2DStudioStart(Robot :RobotStudio,
                        Visual :VisualStudio,

@@ -13,6 +13,7 @@ def axes():
 class PatchParams:
     applyToVisualFunction : str # The function that your patch apply to
     patch :str # The patch that you want to pass as argument to your visual function
+    patchName : str # Name of the visual patch that you are adding to visualization
     arguments :dict # The Kwarg argumentes that passed to the patch
 
 # Data Transfer Object for visualization

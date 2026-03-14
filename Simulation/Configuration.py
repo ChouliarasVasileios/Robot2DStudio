@@ -51,7 +51,7 @@ class Configure(Generic[T]):
                 # Generate the DTOs and replace the old json property value with the generated DTOs
                 # each dictionary inside the list is a mapped DTO now
                 GeneratedDtos = [NameLessObject(**NameLessObjectParams) for NameLessObjectParams in paramValue]
-                print(f"DTO Type{type(GeneratedDtos[0])}")
+                # print(f"DTO Type{type(GeneratedDtos[0])}")
                 # IDEA: Replace the old Patches with the new one!!!
                 params.update({paramName:GeneratedDtos})
 

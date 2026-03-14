@@ -14,7 +14,7 @@ class Integrator:
         k1 = dt*f(x,u)
         k2 = dt*f(x+k1/2,u+dt/2)
         k3 = dt*f(x+k2/2,u+dt/2)
-        k4 = dt*(x+k3,u+dt)
+        k4 = dt*f(x+k3,u+dt)
         return x + (1/6)*(k1+2*k2+2*k3+k4)
 
     #TODO : validate results
