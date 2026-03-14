@@ -3,3 +3,4 @@ DumpFolder
 __pycache__
 .commands
 .oldImplementations
+.todo
