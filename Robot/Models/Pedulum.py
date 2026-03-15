@@ -34,11 +34,9 @@ class Pendulum(Robot):
                       [0, -self.b / (self.m* (self.l**2) )]
                       ])
         
-        E = np.array([[0, 0],
-                      [(-self.g / self.l) * np.sin(x[0,0]), 0]
-                      ])
+        E = np.array([[0,(-self.g / self.l) * np.sin(x[0,0])]]).T
         
-        B = np.array([[0, 1/self.m*self.l]]).T
+        B = np.array([[0, 1/(self.m*self.l**2)]]).T
         
         return A@x + E + B@u
 
