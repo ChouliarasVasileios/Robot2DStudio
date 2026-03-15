@@ -22,8 +22,16 @@ class VisualStudio:
 
 
 def SetUp(Robot :RobotStudio,Visual:VisualStudio):
-    robot = Robot.robot(Configure.Get(Robot.robotParams))
+    robotParams = Configure.Get(Robot.robotParams)
+    robot = Robot.robot(robotParams)
+
+    # TODO: Need Revision if you want a user to use the robotParams in init
+    # cause now you create a new obj and the add the new attribute
     visual = Visual.visual(Configure.Get(Visual.visualParams))
+    
+    # Maybe all this is not worth it cause you can use the robotParams annotation like self.robotParams :RobotParams = robotParams
+    setattr(visual,"robotParams",robotParams)
+    Visual.visual.__annotations__["robotParams"] = Robot.robotParams
 
     return {
         "Robot" : robot,

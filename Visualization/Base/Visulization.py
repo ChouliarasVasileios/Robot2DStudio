@@ -1,6 +1,7 @@
 import sys
 import matplotlib.pyplot as plt
 from numpy import ndarray
+from Robot.Base.RobotParams import RobotParams
 from Visualization.Base.VisulationParams import VisulationParams,PatchParams
 from matplotlib.patches import Patch
 from Services.PrintMessage.Warning import Warning
