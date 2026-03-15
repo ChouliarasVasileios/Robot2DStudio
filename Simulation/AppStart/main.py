@@ -38,6 +38,10 @@ def Loop(Robot :Robot,
     Visual.InitRender()
         
     params :dict = Init()
+
+    # TODO: Maybe user will need to set if from Init - Revision
+    # Now it override it 
+    params.update({"step":Visual.step})
     params.update({"stop":False})
 
     StepWithRobot = partial(Step,Robot)

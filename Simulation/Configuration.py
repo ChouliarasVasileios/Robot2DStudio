@@ -1,28 +1,28 @@
 import json
+from pathlib import Path
 # import copy for deepcopy but propably will not needed ! 
 from typing import Generic,Type, TypeVar
 from Services.PrintMessage.Warning import Warning
-# from Robot.RobotParams import DiffDriveParams
 
 T = TypeVar("T")
-
-def read() -> dict:
-    with open("Simulation\\Configuration\\appsetting.json","r") as f:
-        data = json.load(f)
-        return data
     
 class Configure(Generic[T]):
 
-    __data :dict = read()
+
+    __localModelsDirectory :Path = Path("Robot\\Models")
     
-    #TODO: Make it dynamic not for just the level0
+    #TODO: Make it dynamic not for just the level1
     # Now it works for Vis.Patches (jsonPath)
     @classmethod
     def Get(cls :"Configure",section_type: Type[T]) -> Generic[T]:
 
-        params :dict = cls.__data.get(section_type.__name__,None) # Json -> Dictionary
+        filename = Configure.__IsLocalModel(section_type.__name__)
 
-        paramsKeys = params.keys() # All the Properties of Json file - appsettings.json
+        data :dict = Configure.__read(filename,filename == None)
+
+        params :dict = data.get(section_type.__name__,None)
+
+        paramsKeys = params.keys() # All the Properties of Json file - filename.json
         if(Configure.__IsFlatObject(params)):
             return section_type(**params)
 
@@ -71,10 +71,24 @@ class Configure(Generic[T]):
             if isinstance(dictionary[item],list) and Configure.__IsNameLessObject(dictionary[item]):
                 return False
         return True
-
-
-# def main():
-#     obj = Configure.Get(DiffDriveParams)
-#     print(obj.s)
-
-# main()
+    @staticmethod
+    def __read(filename :str,default: bool) -> dict:
+        if default:
+            with open("Simulation\\Configuration\\appsetting.json","r") as f:
+                data = json.load(f)
+            return data
+            
+        with open(f"Simulation\\Configuration\\Models\\{filename}","r") as f:
+            data = json.load(f)
+        return data
+    
+    @classmethod
+    def __IsLocalModel(self,sectionTypeName :str) -> str|None:
+        for file in Configure.__localModelsDirectory.iterdir():
+            if(file.is_file() and ".py" in file.name and file.name.replace(".py","") == sectionTypeName):
+                return self.toCamelCase(sectionTypeName.replace("Params","")) + ".json"
+        return None
+    
+    def toCamelCase(string :str) -> str:
+        string = string[0].lower() + string[1:]
+        return string

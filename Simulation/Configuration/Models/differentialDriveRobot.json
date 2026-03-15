@@ -41,7 +41,7 @@
         ]
 
     },
-    "MyRobotParams":
+    "DifferentialDriveRobotParams":
     {
         "Name": "r2d2",
         "N":3,

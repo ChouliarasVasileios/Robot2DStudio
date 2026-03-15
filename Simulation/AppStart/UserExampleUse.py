@@ -4,8 +4,8 @@ import keyboard
 
 from Simulation.utils.integrators import Integrator
 
-from Robot.Models.DifferentialDriveRobot import DiffDriveParams
-from Robot.Models.DifferentialDriveRobot import Differential_Drive
+from Robot.Models.DifferentialDriveRobot import DifferentialDriveRobotParams
+from Robot.Models.DifferentialDriveRobot import DifferentialDriveRobot
 
 from Visualization.Base.VisulationParams import VisulationParams
 from Visualization.Models.DifferentialDriveRobot import DiffrentialDriveRobotVisual
@@ -18,7 +18,7 @@ def SimulationInit():
     return {"x":x,"u":u,"x_target":x_target,"error":error}
 
 
-def SimulationStep(robot,x,u,x_target,error,stop) -> bool:
+def SimulationStep(robot,step,x,u,x_target,error,stop) -> bool:
 
     if keyboard.is_pressed("up"):
         u = u + np.array([[1.5,1.5]]).T
@@ -37,7 +37,7 @@ def SimulationStep(robot,x,u,x_target,error,stop) -> bool:
 
     # TODO: INFO - Maybe Euler state is ahead of simulation state
     # x = Integrator.ForwardEuler(x,u,robot.DifferentialKinematics,0.05)
-    x = Integrator.RK4(x,u,robot.DifferentialKinematics,0.05)
+    x = Integrator.RK4(x,u,robot.DifferentialKinematics,step)
     u = np.zeros_like(u)
 
     error = x - x_target
@@ -47,11 +47,11 @@ def SimulationStep(robot,x,u,x_target,error,stop) -> bool:
     # print(x[0,0])
     # print(u)
 
-    return {"x":x,"u":u,"x_target":x_target,"error":error,"stop":stop}
+    return {"step":step,"x":x,"u":u,"x_target":x_target,"error":error,"stop":stop}
 
 
 
-Robot2DStudioStart(Robot = RobotStudio(DiffDriveParams,Differential_Drive),
+Robot2DStudioStart(Robot = RobotStudio(DifferentialDriveRobotParams,DifferentialDriveRobot),
                     Visual = VisualStudio(VisulationParams,DiffrentialDriveRobotVisual),
                     SimulationInit = SimulationInit,
                     SimulationStep = SimulationStep)

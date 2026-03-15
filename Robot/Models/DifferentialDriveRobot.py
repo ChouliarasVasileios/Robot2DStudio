@@ -1,11 +1,11 @@
 import numpy as np
 from Robot.Base.Robot import Robot
-from Robot.Models.DiffDriveParams import DiffDriveParams
+from Robot.Models.DifferentialDriveRobotParams import DifferentialDriveRobotParams
 from Services.PrintMessage.Result import ResultString
 
-class Differential_Drive(Robot):
+class DifferentialDriveRobot(Robot):
 
-    def __init__(self,params :DiffDriveParams):
+    def __init__(self,params :DifferentialDriveRobotParams):
         super().__init__(params)
 
         # Distance between the center of L wheel to the center of R wheel
