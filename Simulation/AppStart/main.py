@@ -1,5 +1,4 @@
 import sys
-import matplotlib.patches as patches
 from typing import Callable,Any
 from dataclasses import dataclass
 from functools import partial
@@ -73,12 +72,3 @@ def Robot2DStudioStart(Robot :RobotStudio,
                        SimulationStep :Callable[[Any],Any]):
     
     Loop(**SetUp(Robot,Visual),Init=SimulationInit,Step=SimulationStep)
-
-
-
-# def main():
-#     Loop(**SetUp())
-    
-
-# if __name__ == "__main__":
-#     main()

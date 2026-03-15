@@ -57,8 +57,12 @@ def SimulationStep(robot,step,x,u,x_target,error,stop) -> bool:
     return {"step":step,"x":x,"u":u,"x_target":x_target,"error":error,"stop":stop}
 
 
-
+# TODO: Use this if the user want to write it's own robot so the program will automatically 
+# read from yourRobot.json
 Robot2DStudioStart(Robot = RobotStudio(PendulumParams,Pendulum),
                     Visual = VisualStudio(VisulationParams,PendulumVisual),
                     SimulationInit = SimulationInit,
                     SimulationStep = SimulationStep)
+
+# TODO: Implement a new interface that user can use when he want to use local models
+# you propable will need to add a mapper so in runtime to read from correct file
