@@ -8,8 +8,8 @@
             "name": "Debug UserExampleUse",
             "type": "debugpy",
             "request": "launch",
-            "module":"Simulation.AppStart.UserExampleLocalModel",
-            // "module": "Simulation.AppStart.UserExampleUse",
+            // "module":"Simulation.AppStart.UserExampleLocalModel",
+            "module": "Simulation.AppStart.UserExampleUse",
             // "module": "Simulation.AppStart.TestEnv",
             "console": "integratedTerminal",
             "justMyCode": false

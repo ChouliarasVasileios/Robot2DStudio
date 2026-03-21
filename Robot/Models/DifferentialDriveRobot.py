@@ -22,5 +22,13 @@ class DifferentialDriveRobot(Robot):
     def DifferentialKinematics(self,x,u):        
         return self.Jacobian(x) @ u
 
+
+    def __printAttributes(self) -> str:
+        outputStr :str = ""
+        for key,value in self.__dict__.items():
+            outputStr += f"\n\t,{key} = {ResultString(value)}"
+        return outputStr
+
+
     def __repr__(self):
-        return super().__repr__().replace(")","") + f"\n\t,s={ResultString(self.s)}\n\t,r={ResultString(self.r)})"
+        return super().__repr__().replace(")","") + self.__printAttributes() + "\n)"

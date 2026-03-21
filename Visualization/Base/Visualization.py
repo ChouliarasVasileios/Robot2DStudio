@@ -89,8 +89,18 @@ class Visualization:
                 return PatchClass
         Warning(msg = f"Could Not Find patch with PatchName {patchName}")
 
-    def GetPatches(self, appliedFunction : Callable) -> list[Patch]:
-        pass # TODO: make it return a list of patches that applied to a specific function
+# TODO: Need Testing
+    def GetPatches(self, appliedFunction : Callable) -> list[tuple[str,Patch]] | None:
+
+        # Get all the associated patches from json according to appliedFunction
+        PatchParamsOfAppiedFunction :list[PatchParams] = [patchParams for patchParams in self.__PatchesParams if patchParams.applyToVisualFunction == appliedFunction]
+
+        if len(PatchParamsOfAppiedFunction) < 1:
+            Warning(f"Could not found patch associated with the appliedFunction {appliedFunction}")
+            return None
+        
+        # Return all the patch that are associate with a function
+        return [(p.patchName,self.GetPatch(p.patchName)) for p in PatchParamsOfAppiedFunction]
 
     def _on_close(self,event):
         print("Exiting Robot2DStudio Bye! :)")

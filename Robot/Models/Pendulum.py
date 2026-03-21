@@ -49,4 +49,4 @@ class Pendulum(Robot):
 
 
     def __repr__(self):
-        return super().__repr__().replace(")","") + self.__printAttributes()
+        return super().__repr__().replace(")","") + self.__printAttributes() + "\n)"

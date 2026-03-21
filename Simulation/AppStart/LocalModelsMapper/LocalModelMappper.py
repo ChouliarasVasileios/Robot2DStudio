@@ -9,12 +9,16 @@ from Visualization.Models.DifferentialDriveRobot import DiffrentialDriveRobotVis
 from Robot.Models.PendulumParams import PendulumParams
 from Robot.Models.Pendulum import Pendulum
 from Visualization.Models.Pendulum import PendulumVisual
+from Robot.Models.DoublePendulumParams import DoublePendulumParams
+from Robot.Models.DoublePendulum import DoublePendulum
+from Visualization.Models.DoublePendulum import DoublePendulumVisual
 
 def Mapper()->dict[RobotParams,Robot]:
     """Contains the Model associate with the DTO and implementaion"""
     return{
         "DifferentialDriveRobot":(DifferentialDriveRobotParams,DifferentialDriveRobot,DiffrentialDriveRobotVisual),
-        "Pendulum": (PendulumParams,Pendulum,PendulumVisual)
+        "Pendulum": (PendulumParams,Pendulum,PendulumVisual),
+        "DoublePendulum": (DoublePendulumParams,DoublePendulum,DoublePendulumVisual)
     }
 
 def Dispose(MapperVar:dict):
