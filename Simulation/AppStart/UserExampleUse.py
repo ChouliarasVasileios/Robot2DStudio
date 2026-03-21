@@ -54,7 +54,7 @@ def SimulationStep(robot,step,x,u,x_target,error,stop) -> bool:
     print(x)
     print(u)
 
-    return {"step":step,"x":x,"u":u,"x_target":x_target,"error":error,"stop":stop}
+    return {"x":x,"u":u,"x_target":x_target,"error":error,"stop":stop}
 
 
 # TODO: Use this if the user want to write it's own robot so the program will automatically 
