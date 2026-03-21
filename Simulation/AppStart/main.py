@@ -2,12 +2,12 @@ import sys
 from typing import Callable,Any
 from dataclasses import dataclass
 from functools import partial
+from Simulation.AppStart.LocalModelsMapper.LocalModelMappper import Mapper,Dispose
 from Simulation.Configuration import Configure
 from Robot.Base.Robot import Robot
 from Robot.Base.RobotParams import RobotParams
-from Visualization.Base.Visulization import Visualization
-from Visualization.Base.VisulationParams import VisulationParams
-
+from Visualization.Base.Visualization import Visualization
+from Visualization.Base.VisualationParams import VisualationParams
 
 @dataclass
 class RobotStudio:
@@ -16,7 +16,7 @@ class RobotStudio:
 
 @dataclass
 class VisualStudio:
-    visualParams : VisulationParams
+    visualParams : VisualationParams
     visual :Visualization
 
 
@@ -24,11 +24,8 @@ def SetUp(Robot :RobotStudio,Visual:VisualStudio):
     robotParams = Configure.Get(Robot.robotParams)
     robot = Robot.robot(robotParams)
 
-    # TODO: Need Revision if you want a user to use the robotParams in init
-    # cause now you create a new obj and the add the new attribute
     visual = Visual.visual(Configure.Get(Visual.visualParams))
     
-    # Maybe all this is not worth it cause you can use the robotParams annotation like self.robotParams :RobotParams = robotParams
     setattr(visual,"robotParams",robotParams)
     Visual.visual.__annotations__["robotParams"] = Robot.robotParams
 
@@ -36,6 +33,34 @@ def SetUp(Robot :RobotStudio,Visual:VisualStudio):
         "Robot" : robot,
         "Visual" : visual,
     }
+
+def SetUpLocalMode(ModelName :str,Override:bool):
+
+    mapper = Mapper()
+
+    RobotParams,Robot,RobotVisual = mapper[ModelName]
+    Dispose(mapper)
+
+    robotParams = Configure.Get(section_type=RobotParams,
+                                modelName=ModelName,
+                                overrideModel=Override)
+
+    robot = Robot(robotParams)
+    
+    visual = RobotVisual(Configure.Get(section_type=VisualationParams,
+                                modelName=ModelName,
+                                overrideModel=Override))
+
+    setattr(visual,"robotParams",robotParams)
+    Visualization.__annotations__["robotParams"] = RobotParams
+
+    return {
+        "Robot" : robot,
+        "Visual" : visual,
+    }
+
+
+
 
 def Loop(Robot :Robot,
          Visual:Visualization,
@@ -68,3 +93,13 @@ def Robot2DStudioStart(Robot :RobotStudio,
                        SimulationStep :Callable[[Any],Any]):
     
     Loop(**SetUp(Robot,Visual),Init=SimulationInit,Step=SimulationStep)
+
+
+def Robot2DStudioLocalModelStart(ModelName :str,
+                                 Overrride :bool,
+                                 SimulationInit :Callable[[None],Any],
+                                 SimulationStep :Callable[[Any],Any]):
+
+
+     Loop(**SetUpLocalMode(ModelName=ModelName,Override=Overrride),Init=SimulationInit,Step=SimulationStep)
+    

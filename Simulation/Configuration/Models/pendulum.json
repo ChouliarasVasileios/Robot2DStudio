@@ -1,5 +1,5 @@
 {
-    "VisulationParams":
+    "VisualationParams":
     {
         "title":"Pendulum Simulation",
         "xlabel":"x-axis",
@@ -15,7 +15,7 @@
         "Name": " Single Pendulum",
         "N":2,
         "M":1,
-        "l":1.5,
+        "l":2.5,
         "m":0.5,
         "g": 9.81,
         "b":0.35

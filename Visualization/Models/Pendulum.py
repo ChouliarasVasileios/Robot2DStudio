@@ -1,10 +1,10 @@
 import numpy as np
 from numpy import ndarray
-from Visualization.Base.Visulization import Visualization
+from Visualization.Base.Visualization import Visualization
 
 class PendulumVisual(Visualization):
-    def __init__(self, visulationParams):
-        super().__init__(visulationParams)
+    def __init__(self, visualationParams):
+        super().__init__(visualationParams)
         
         #README : In RunTime the Robot2DStudio will add the robotParams that you specified in .json file
         # So feel free to access your robotParams and use them to visualize your robot

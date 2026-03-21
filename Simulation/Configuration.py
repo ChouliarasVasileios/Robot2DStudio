@@ -3,6 +3,7 @@ from pathlib import Path
 # import copy for deepcopy but propably will not needed ! 
 from typing import Generic,Type, TypeVar
 from Services.PrintMessage.Warning import Warning
+from sys import exit
 
 T = TypeVar("T")
     
@@ -14,11 +15,23 @@ class Configure(Generic[T]):
     #TODO: Make it dynamic not for just the level1
     # Now it works for Vis.Patches (jsonPath)
     @classmethod
-    def Get(cls :"Configure",section_type: Type[T]) -> Generic[T]:
+    def Get(cls :"Configure",section_type: Type[T],modelName:str|None = None, overrideModel:bool = False) -> Generic[T]:
+        """ 1 - Load the VisualizationParams and RobotParams that user create
+            It is their own Modeling using the Base Visualization and Robot Class
+            User Specify the Robot Class and the Visualization Class
+            So you read from a specific folder the .json that contains the user parameters
+            Location "Project/Configuration/<<userModelName>>.json"
 
-        filename = Configure.__IsLocalModel(section_type.__name__)
+            2 - Load a Local Model (Visualization and Robot Params) that user specify by the Name
+                If user override the default settings read from their local location
+                Location 'Project/Configuration/Model/<<localModelName>>.json'
+        """
 
-        data :dict = Configure.__read(filename,filename == None)
+        #TODO: Implement The Load a Local Model that user Need to override its Parameters
+
+        filename = Configure.__IsLocalModel(modelName)
+
+        data :dict = Configure.__read(filename)
 
         params :dict = data.get(section_type.__name__,None)
 
@@ -57,6 +70,7 @@ class Configure(Generic[T]):
 
         return section_type(**params)
 
+
     @staticmethod
     def __IsNameLessObject(lst :list) -> bool:
         isTrueCount :int = 0
@@ -71,9 +85,10 @@ class Configure(Generic[T]):
             if isinstance(dictionary[item],list) and Configure.__IsNameLessObject(dictionary[item]):
                 return False
         return True
+    
     @staticmethod
-    def __read(filename :str,default: bool) -> dict:
-        if default:
+    def __read(filename :str | None) -> dict:
+        if not filename:
             with open("Simulation\\Configuration\\appsetting.json","r") as f:
                 data = json.load(f)
             return data
@@ -83,12 +98,13 @@ class Configure(Generic[T]):
         return data
     
     @classmethod
-    def __IsLocalModel(self,sectionTypeName :str) -> str|None:
+    def __IsLocalModel(self,modelName :str) -> str|None:
         for file in Configure.__localModelsDirectory.iterdir():
-            if(file.is_file() and ".py" in file.name and file.name.replace(".py","") == sectionTypeName):
-                return self.toCamelCase(sectionTypeName.replace("Params","")) + ".json"
+            if(file.is_file() and ".py" in file.name and file.name.replace(".py","") == modelName):
+                return self.__toCamelCase(modelName) + ".json"
         return None
     
-    def toCamelCase(string :str) -> str:
+    @staticmethod
+    def __toCamelCase(string :str) -> str:
         string = string[0].lower() + string[1:]
         return string
