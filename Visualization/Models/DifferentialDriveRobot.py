@@ -1,12 +1,12 @@
 import numpy as np
 from numpy import ndarray
 import matplotlib.patches as patches
-from Visualization.Base.Visulization import Visualization
+from Visualization.Base.Visualization import Visualization
 
 class DiffrentialDriveRobotVisual(Visualization):
     
-    def __init__(self, visulationParams):
-        super().__init__(visulationParams)
+    def __init__(self, visualationParams):
+        super().__init__(visualationParams)
 
         # ''' This space can be use to add more attributes or to used as init function for graphics '''
 

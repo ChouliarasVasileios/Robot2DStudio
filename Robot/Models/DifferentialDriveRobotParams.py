@@ -3,7 +3,7 @@ from Robot.Base.RobotParams import RobotParams
 
 # Data Transfer Object for robot modeling
 @dataclass
-class DiffDriveParams(RobotParams):
+class DifferentialDriveRobotParams(RobotParams):
     # Name : str # Robot Name
     # N : int  # State Dimension
     # M : int  # Action Dimension

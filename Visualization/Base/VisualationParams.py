@@ -18,7 +18,7 @@ class PatchParams:
 
 # Data Transfer Object for visualization
 @dataclass
-class VisulationParams:
+class VisualationParams:
     title :str # Title of matplot windown
     xlabel :str # Label of x ax
     ylabel :str # Label of y ax

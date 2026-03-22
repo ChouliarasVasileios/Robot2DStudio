@@ -1,43 +1,44 @@
 import sys
 import matplotlib.pyplot as plt
 from numpy import ndarray
-from Visualization.Base.VisulationParams import VisulationParams,PatchParams
+from Robot.Base.RobotParams import RobotParams
+from Visualization.Base.VisualationParams import VisualationParams,PatchParams
 from matplotlib.patches import Patch
 from Services.PrintMessage.Warning import Warning
 from typing import Callable
 
 class Visualization:
 
-    def __init__(self,visulationParams:VisulationParams):
+    def __init__(self,visualationParams:VisualationParams):
         
         # Set the axes
-        self.axes = visulationParams._axes
+        self.axes = visualationParams._axes
 
         # Adding a title at plot
-        self.axes.set_title(visulationParams.title)
+        self.axes.set_title(visualationParams.title)
         
         # Adding x label at plot
-        self.axes.set_xlabel(visulationParams.xlabel)
+        self.axes.set_xlabel(visualationParams.xlabel)
         
         # Adding y label at plot
-        self.axes.set_ylabel(visulationParams.ylabel)
+        self.axes.set_ylabel(visualationParams.ylabel)
         
         # Adding grid at plot
-        self.axes.grid(visulationParams.grid_on)
+        self.axes.grid(visualationParams.grid_on)
         
         # Adding x axes limits
-        self.axes.set_xlim(visulationParams.xlim)
+        self.axes.set_xlim(visualationParams.xlim)
         
         # Adding y axes limit
-        self.axes.set_ylim(visulationParams.ylim)
+        self.axes.set_ylim(visualationParams.ylim)
 
         # Set the aspect of visualization to be Equal
         self.axes.set_aspect("equal")
 
-        self.step = visulationParams.step
+        self.step = visualationParams.step
 
         # Internal Variables
-        self.__PatchesParams :list[PatchParams] = visulationParams.Patches
+        self.__PatchesParams :list[PatchParams] = visualationParams.Patches
 
         self.__Patches :list[tuple[str,Patch]] = self.__SetPatches()
         
@@ -46,8 +47,9 @@ class Visualization:
         
     def Render(self,x :ndarray):
         self.Update(x)
-        plt.draw()
+        self.axes.redraw_in_frame()
         plt.pause(self.step)
+        # plt.draw()
     
     def InitRender(self):
         # Add close event to stop the Studio
@@ -60,12 +62,14 @@ class Visualization:
         Warning("Need to be implemented")
 
     def AddPatchesToVisualization(self):
+        if not self.__Patches: return
         for name,patch in self.__Patches:
             self.axes.add_patch(patch)
             print(f"Patch: {patch} with name: {name} added to visualization")
 
     
-    def __SetPatches(self) -> list[tuple[str,Patch]]:
+    def __SetPatches(self) -> list[tuple[str,Patch]] | None:
+        if not self.__PatchesParams : return None
         PatchSettings :list[tuple[str,str,dict]] = [(patchParams.patchName,patchParams.patch,patchParams.arguments) for patchParams in self.__PatchesParams]
         return self.__ConfigurePatch(PatchSettings)
 
@@ -86,8 +90,18 @@ class Visualization:
                 return PatchClass
         Warning(msg = f"Could Not Find patch with PatchName {patchName}")
 
-    def GetPatches(self, appliedFunction : Callable) -> list[Patch]:
-        pass # TODO: make it return a list of patches that applied to a specific function
+# TODO: Need Testing
+    def GetPatches(self, appliedFunction : Callable) -> list[tuple[str,Patch]] | None:
+
+        # Get all the associated patches from json according to appliedFunction
+        PatchParamsOfAppiedFunction :list[PatchParams] = [patchParams for patchParams in self.__PatchesParams if patchParams.applyToVisualFunction == appliedFunction]
+
+        if len(PatchParamsOfAppiedFunction) < 1:
+            Warning(f"Could not found patch associated with the appliedFunction {appliedFunction}")
+            return None
+        
+        # Return all the patch that are associate with a function
+        return [(p.patchName,self.GetPatch(p.patchName)) for p in PatchParamsOfAppiedFunction]
 
     def _on_close(self,event):
         print("Exiting Robot2DStudio Bye! :)")

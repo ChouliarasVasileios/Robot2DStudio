@@ -1,11 +1,11 @@
 import numpy as np
 from Robot.Base.Robot import Robot
-from Robot.Models.DiffDriveParams import DiffDriveParams
+from Robot.Models.DifferentialDriveRobotParams import DifferentialDriveRobotParams
 from Services.PrintMessage.Result import ResultString
 
-class Differential_Drive(Robot):
+class DifferentialDriveRobot(Robot):
 
-    def __init__(self,params :DiffDriveParams):
+    def __init__(self,params :DifferentialDriveRobotParams):
         super().__init__(params)
 
         # Distance between the center of L wheel to the center of R wheel
@@ -22,5 +22,13 @@ class Differential_Drive(Robot):
     def DifferentialKinematics(self,x,u):        
         return self.Jacobian(x) @ u
 
+
+    def __printAttributes(self) -> str:
+        outputStr :str = ""
+        for key,value in self.__dict__.items():
+            outputStr += f"\n\t,{key} = {ResultString(value)}"
+        return outputStr
+
+
     def __repr__(self):
-        return super().__repr__().replace(")","") + f"\n\t,s={ResultString(self.s)}\n\t,r={ResultString(self.r)})"
+        return super().__repr__().replace(")","") + self.__printAttributes() + "\n)"

@@ -1,0 +1,24 @@
+{
+    "VisualationParams":
+    {
+        "title":"Double Pendulum Simulation",
+        "xlabel":"x-axis",
+        "ylabel":"y-axis",
+        "grid_on":true,
+        "xlim": [-3,3],
+        "ylim": [-3,3],
+        "step": 0.05,
+        "Patches": null
+    },
+    "DoublePendulumParams":
+    {
+        "Name": " Double Pendulum",
+        "N":4,
+        "M":2,
+        "l1":1.0,
+        "m1":0.5,
+        "l2":1.0,
+        "m2":0.5,
+        "g":9.81
+    }
+}
