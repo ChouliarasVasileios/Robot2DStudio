@@ -1,0 +1,31 @@
+{
+    "VisualationParams":
+    {
+        "title":"Your Simulation Title",
+        "xlabel":"x-axis",
+        "ylabel":"y-axis",
+        "grid_on":true,
+        "xlim": [-3,3],
+        "ylim": [-3,3],
+        "step": 0.05,
+        "Patches":[
+            {
+                "applyToVisualFunction": "Provide the function that the following Pathc is applied to(Just the name)",
+                "patch": "Provide the patch that you want to call from matplotlib (e.g Rectangle)",
+                "patchName" : "Provide you patch name (e.g BodyRectangle",
+                "arguments":{
+                    "Pass the arguments and values that a patch is accept in matplotlib":null
+                }
+            }
+        ]
+
+    },
+    "YourRobotParams (Rename to Match your YourRobotParams class":
+    {
+        "Name": "r2d2",
+        "N":3,
+        "M":2,
+        "Add Your parameters here ( Delete This one)":null
+    }
+
+}

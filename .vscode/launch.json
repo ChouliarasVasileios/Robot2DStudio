@@ -8,7 +8,15 @@
             "request": "launch",
             // "module":"Robot2DStudio.Simulation.AppStart.UserExampleLocalModel",
             // "module": "Robot2DStudio.Simulation.AppStart.UserExampleUse",
-            "module": "Robot2DStudio.Simulation.AppStart.TestEnv",
+            // "module": "Robot2DStudio.Simulation.AppStart.TestEnv",
+            "module":"Robot2DStudio.Template.CLI",
+            "args":[
+                "--newProject",
+                "ProjectName",
+                "--useModel",
+                "pendulum",
+                "--overrideModel"
+            ],
             "console": "integratedTerminal",
             "justMyCode": false
         }
