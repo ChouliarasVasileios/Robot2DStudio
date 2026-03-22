@@ -1,0 +1,1 @@
+#TODO: make the CLI entry point that generate the project layout

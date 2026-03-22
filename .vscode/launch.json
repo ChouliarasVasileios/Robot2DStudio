@@ -6,9 +6,9 @@
             "type": "debugpy",
             // "type": "python",
             "request": "launch",
-            // "module":"Simulation.AppStart.UserExampleLocalModel",
-            "module": "Simulation.AppStart.UserExampleUse",
-            // "module": "Simulation.AppStart.TestEnv",
+            // "module":"Robot2DStudio.Simulation.AppStart.UserExampleLocalModel",
+            // "module": "Robot2DStudio.Simulation.AppStart.UserExampleUse",
+            "module": "Robot2DStudio.Simulation.AppStart.TestEnv",
             "console": "integratedTerminal",
             "justMyCode": false
         }
