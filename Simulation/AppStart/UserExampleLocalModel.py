@@ -1,4 +1,4 @@
-from Simulation.AppStart.main import Robot2DStudioLocalModelStart
+from Simulation.AppStart.SimulationMain import Robot2DStudioLocalModelStart
 import numpy as np
 from Simulation.utils.integrators import Integrator
 

@@ -1,4 +1,4 @@
-from Simulation.AppStart.main import Robot2DStudioStart,RobotStudio,VisualStudio
+from Simulation.AppStart.SimulationMain import Robot2DStudioStart,RobotStudio,VisualStudio
 import numpy as np
 import keyboard
 

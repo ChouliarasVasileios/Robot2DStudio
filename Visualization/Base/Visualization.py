@@ -47,8 +47,9 @@ class Visualization:
         
     def Render(self,x :ndarray):
         self.Update(x)
-        plt.draw()
+        self.axes.redraw_in_frame()
         plt.pause(self.step)
+        # plt.draw()
     
     def InitRender(self):
         # Add close event to stop the Studio

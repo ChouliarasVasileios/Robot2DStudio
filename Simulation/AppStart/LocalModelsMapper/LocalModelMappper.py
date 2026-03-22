@@ -1,4 +1,4 @@
-from Services.PrintMessage.Result import Result
+from Services.PrintMessage.Result import Result,ResultString
 # --------------------------------------------------------------------------------------------------
 from Robot.Base.Robot import Robot
 from Robot.Base.RobotParams import RobotParams
@@ -23,6 +23,14 @@ def Mapper()->dict[RobotParams,Robot]:
 
 def Dispose(MapperVar:dict):
     """Clear Memory of a Mapper Variable that created from Mapper Property"""
-    Result(f"Start Deleting Mapper {MapperVar} size of: {MapperVar.__sizeof__()}")
+
+    print(ResultString("="*150))
+    _ = 0
+    for modelName, modelTypes in MapperVar.items():
+        _+=1
+        modelstr:str = ResultString(f"{_} - {modelName} :\n\t\t")
+        print(modelstr + f"{modelTypes}\n")
+    Result(f"Start Deleting Mapper size of: {MapperVar.__sizeof__()} bytes")
     MapperVar.clear()
     Result("Dipose the Mapper after initialization")
+    print(ResultString("="*150))
