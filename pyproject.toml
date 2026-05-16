@@ -8,3 +8,8 @@ version = "0.0.1"
 
 [project.scripts]
 robot2DStudio = "Robot2DStudio.__main__:CLI"
+
+[tool.setuptools.package-data]
+Robot2DStudio = [
+    "Robot2DStudio/Simulation/Configuration/*.json"
+]

@@ -4,15 +4,7 @@ from Robot2DStudio.Robot.Base.Robot import Robot
 from Robot2DStudio.Robot.Base.RobotParams import RobotParams
 from Robot2DStudio.Visualization.Base.Visualization import Visualization
 # --------------------------------------------------------------------------------------------------
-from Robot2DStudio.Robot.Models.DifferentialDriveRobotParams import DifferentialDriveRobotParams
-from Robot2DStudio.Robot.Models.DifferentialDriveRobot import DifferentialDriveRobot
-from Robot2DStudio.Visualization.Models.DifferentialDriveRobot import DiffrentialDriveRobotVisual
-from Robot2DStudio.Robot.Models.PendulumParams import PendulumParams
-from Robot2DStudio.Robot.Models.Pendulum import Pendulum
-from Robot2DStudio.Visualization.Models.Pendulum import PendulumVisual
-from Robot2DStudio.Robot.Models.DoublePendulumParams import DoublePendulumParams
-from Robot2DStudio.Robot.Models.DoublePendulum import DoublePendulum
-from Robot2DStudio.Visualization.Models.DoublePendulum import DoublePendulumVisual
+from Robot2DStudio.Simulation.AppStart.LocalModelsMapper.LocalModelsImport import *
 
 def Mapper()->dict[RobotParams,Robot,Visualization]:
     """Contains the Model associate with the DTO and implementation"""

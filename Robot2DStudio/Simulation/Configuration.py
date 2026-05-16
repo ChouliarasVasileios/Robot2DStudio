@@ -5,13 +5,20 @@ from typing import Generic,Type, TypeVar
 from Robot2DStudio.Services.PrintMessage.Warning import Warning
 from sys import exit
 
+from importlib.resources import files
+localModelsDir = files("Robot2DStudio").joinpath("Robot/Models")
+
+appsettingsDir = files("Robot2DStudio").joinpath("Simulation/Configuration")
+
 T = TypeVar("T")
     
 class Configure(Generic[T]):
 
 
-    __localModelsDirectory :Path = Path("Robot2DStudio\\Robot\\Models")
+    # __localModelsDirectory :Path = Path("\Robot2DStudio\\Robot\\Models")
     
+    __localModelsDirectory :Path = Path(str(localModelsDir))
+
     #TODO: Make it dynamic not for just the level1
     # Now it works for Vis.Patches (jsonPath)
     @classmethod
@@ -89,11 +96,11 @@ class Configure(Generic[T]):
     @staticmethod
     def __read(filename :str | None) -> dict:
         if not filename:
-            with open("Robot2DStudio\\Simulation\\Configuration\\appsetting.json","r") as f:
+            with open(f"{str(appsettingsDir)}\\appsetting.json","r") as f:
                 data = json.load(f)
             return data
             
-        with open(f"Robot2DStudio\\Simulation\\Configuration\\Models\\{filename}","r") as f:
+        with open(f"{str(appsettingsDir)}\\Models\\{filename}","r") as f:
             data = json.load(f)
         return data
     
