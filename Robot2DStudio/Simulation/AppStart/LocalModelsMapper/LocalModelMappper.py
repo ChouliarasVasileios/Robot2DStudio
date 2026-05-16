@@ -15,7 +15,7 @@ from Robot2DStudio.Robot.Models.DoublePendulum import DoublePendulum
 from Robot2DStudio.Visualization.Models.DoublePendulum import DoublePendulumVisual
 
 def Mapper()->dict[RobotParams,Robot,Visualization]:
-    """Contains the Model associate with the DTO and implementaion"""
+    """Contains the Model associate with the DTO and implementation"""
     return{
         "DifferentialDriveRobot":(DifferentialDriveRobotParams,DifferentialDriveRobot,DiffrentialDriveRobotVisual),
         "Pendulum": (PendulumParams,Pendulum,PendulumVisual),

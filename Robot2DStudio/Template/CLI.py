@@ -1,4 +1,3 @@
-# Robot2DStudio/CLI.py
 from Robot2DStudio.Simulation.AppStart.LocalModelsMapper.LocalModelMappper import Mapper
 from enum import Enum
 from dataclasses import dataclass
@@ -107,7 +106,7 @@ def CreateProject(project :Project) -> str:
 def LogMsg(msg :str):
     print(msg)
 
-if __name__ == "__main__":
+def CLI():
     LogMsg(
         CreateProject(
             ValidateCommands(
@@ -115,3 +114,12 @@ if __name__ == "__main__":
                 )
             )
         )
+    
+# if __name__ == "__main__":
+#     LogMsg(
+#         CreateProject(
+#             ValidateCommands(
+#                 ParseArgs(*sys.argv[1:])
+#                 )
+#             )
+#         )
