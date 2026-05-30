@@ -2,6 +2,13 @@ from Robot2DStudio.Simulation.AppStart.LocalModelsMapper.LocalModelMappper impor
 from enum import Enum
 from dataclasses import dataclass
 import sys
+import os
+import shutil
+from importlib.resources import files
+
+CustomTemplateDirectory:str = str(files("Robot2DStudio").joinpath("Template/ProjectTemplates/Custom"))
+# LocalModelTemplateDirectory
+# OverrideLocalModelTemplateDirectory
 
 class ProjectType(Enum):
     Custom = 1,
@@ -80,7 +87,19 @@ def ValidateCommands(commands:dict) -> Project|None:
      
     return None
 
-def __CreateCustomProject():return "Create Custom Project"
+def __CreateCustomProject(project: Project) -> str:
+    
+    currentWorkingDirectory :str = os.getcwd()
+    workingProjectDirectory :str = os.path.join(currentWorkingDirectory,project.ProjectName)
+    try:
+        shutil.copytree(CustomTemplateDirectory,workingProjectDirectory,dirs_exist_ok=True)
+        os.rename(os.path.join(workingProjectDirectory,"Custom.py"),os.path.join(workingProjectDirectory,"".join([project.ProjectName,".py"])))
+    except:
+        raise("Failed to Create Custom Project")
+    # finally: // Need validation
+    #     shutil.rmtree(workingProjectDirectory)
+
+    return "Create Custom Project"
 
 def __CreateLocalModelProject():return "Create Local Model Project"
 
@@ -91,7 +110,7 @@ def __CreateOverrideLocalModeProject():return "Create Override Local Model Proje
 def CreateProject(project :Project) -> str:
     
     if project.ProjectType == ProjectType.Custom:
-        return __CreateCustomProject()
+        return __CreateCustomProject(project=project)
     
     elif project.ProjectType == ProjectType.LocalModel:
         return __CreateLocalModelProject()
