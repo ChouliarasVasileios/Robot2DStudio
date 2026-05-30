@@ -7,7 +7,8 @@ import shutil
 from importlib.resources import files
 
 CustomTemplateDirectory:str = str(files("Robot2DStudio").joinpath("Template/ProjectTemplates/Custom"))
-# LocalModelTemplateDirectory
+LocalModelTemplateDirectory:str = str(files("Robot2DStudio").joinpath("Template/ProjectTemplates/LocalModel"))
+
 # OverrideLocalModelTemplateDirectory
 
 class ProjectType(Enum):
@@ -60,6 +61,10 @@ def ParseArgs(*args):
     return commands
 
 def ValidateCommands(commands:dict) -> Project|None:
+
+    if(commands == None):
+        return None
+
     if len(commands.keys()) > TOTAL_COMMANDS:
         return None
     
@@ -87,6 +92,18 @@ def ValidateCommands(commands:dict) -> Project|None:
      
     return None
 
+def ValidateCommandsValues(commands:dict) -> dict|None:
+
+    for command in commands:
+        value :str = commands[command]
+
+        if((value == None) or (value.strip() == "")):
+            print(f"Should provide a non empty value | {command}:{value}")
+            return None
+
+    return commands
+
+
 def __CreateCustomProject(project: Project) -> str:
     
     currentWorkingDirectory :str = os.getcwd()
@@ -95,25 +112,63 @@ def __CreateCustomProject(project: Project) -> str:
         shutil.copytree(CustomTemplateDirectory,workingProjectDirectory,dirs_exist_ok=True)
         os.rename(os.path.join(workingProjectDirectory,"Custom.py"),os.path.join(workingProjectDirectory,"".join([project.ProjectName,".py"])))
     except:
-        raise("Failed to Create Custom Project")
-    # finally: // Need validation
-    #     shutil.rmtree(workingProjectDirectory)
+        # TODO: RollBack
+        return "Failed to Create Custom Project"
+    
+    return "Created Custom Project"
 
-    return "Create Custom Project"
+def __CreateLocalModelProject(project: Project) -> str:
+    
+    currentWorkingDirectory :str = os.getcwd()
+    workingProjectDirectory :str = os.path.join(currentWorkingDirectory,project.ProjectName)
 
-def __CreateLocalModelProject():return "Create Local Model Project"
+    try:
+     
+        shutil.copytree(LocalModelTemplateDirectory,workingProjectDirectory,dirs_exist_ok=True)
+     
+        localModelPythonFile :str = os.path.join(workingProjectDirectory,"".join([project.LocalModelName,".py"]))
+
+        print(localModelPythonFile)
+        os.rename(os.path.join(workingProjectDirectory,str("LocalModel.py")),localModelPythonFile)
+
+        strFile :str = ""
+        with open(localModelPythonFile,"r",encoding="utf-8") as file:
+            strFile = file.read(-1)
+
+
+        print(strFile.find("{{modelName}}"))
+        
+        for index in range(len(strFile)):
+            if(index >= 728 and index < len("ModelName")):
+                strFile[index] = "|"
+
+        print(project.LocalModelName)
+
+        with open(os.path.join(workingProjectDirectory,"".join(["replaced",".py"])),"w",encoding="utf-8") as f:
+            f.write("here")
+
+    except Exception as e:
+        print(e)
+        # TODO: RollBack
+        return "Failed to Create LocalModel Project"
+
+
+    return "Created Local Model Project"
 
 #TODO Need Implementation
-def __CreateOverrideLocalModeProject():return "Create Override Local Model Project"
+def __CreateOverrideLocalModeProject():return "Created Override Local Model Project"
 
 
 def CreateProject(project :Project) -> str:
+
+    if project == None:
+        return f"Could Not Create the Project {project}"
     
     if project.ProjectType == ProjectType.Custom:
         return __CreateCustomProject(project=project)
     
     elif project.ProjectType == ProjectType.LocalModel:
-        return __CreateLocalModelProject()
+        return __CreateLocalModelProject(project=project)
     
     elif project.ProjectType == ProjectType.OverrideLocalModel:
         return __CreateOverrideLocalModeProject()
@@ -129,7 +184,9 @@ def CLI():
     LogMsg(
         CreateProject(
             ValidateCommands(
-                ParseArgs(*sys.argv[1:])
+                ValidateCommandsValues(
+                    ParseArgs(*sys.argv[1:])
+                    )
                 )
             )
         )
