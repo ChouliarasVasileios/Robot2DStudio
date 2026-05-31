@@ -26,6 +26,5 @@ def SimulationStep(robot,step,x,u,x_target,error,stop) -> bool:
 
 
 Robot2DStudioLocalModelStart(ModelName = "{{modelName}}" ,
-                             Overrride=False,
                              SimulationInit = SimulationInit,
                              SimulationStep = SimulationStep)

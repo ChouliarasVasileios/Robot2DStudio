@@ -11,6 +11,8 @@ from Robot2DStudio.Visualization.Base.VisualationParams import VisualationParams
 import matplotlib
 import matplotlib.pyplot as plt
 import inspect
+import os
+from pathlib import Path
 
 @dataclass
 class RobotStudio:
@@ -22,6 +24,14 @@ class VisualStudio:
     visualParams : VisualationParams
     visual :Visualization
 
+def GetJsonPath(CallFrom:inspect.FrameInfo) -> str:
+    [projectDirectory,projectFileName] = os.path.split(str(CallFrom.filename))
+    configurationDirectory = os.path.join(projectDirectory,"Configuration")
+    fileName = [file for file in Path(configurationDirectory).iterdir() 
+                if ((".json" in file.name) 
+                    and 
+                    (file.name.split(".")[0].lower() == projectFileName.split(".")[0].lower()))][0].name
+    return os.path.join(configurationDirectory,fileName)
 
 def __addAttribute(ClassType :object,AttributeType:object,InstanceObject :object, AttributeName :str, AttributeValue:Any):
         """ Initialize a new attribute for a class at run time"""
@@ -49,14 +59,13 @@ def __GetLocalModelTypes(ModelName:str)->dict:
         "RobotVisual": RobotVisual
     }
 
-
-def SetUp(Robot :RobotStudio,Visual:VisualStudio):
+def SetUp(Robot :RobotStudio,Visual:VisualStudio,FilePath:str):
     """ Load the Robot and Visualization objects and add the robotParams attribute to Visualization.
         Used for custom Implementaion"""
-    robotParams = Configure.Get(Robot.robotParams)
+    robotParams = Configure.Get(Robot.robotParams,FilePath)
     robot = Robot.robot(robotParams)
 
-    visual = Visual.visual(Configure.Get(Visual.visualParams))
+    visual = Visual.visual(Configure.Get(Visual.visualParams,FilePath))
 
     # Create an attribute self.robotParams = robotParamsDTOInstance
     __addAttribute(ClassType=Visual.visual,
@@ -72,17 +81,18 @@ def SetUp(Robot :RobotStudio,Visual:VisualStudio):
         "Visual" : visual,
     }
 
-def SetUpLocalMode(ModelName :str,Override:bool):
+def SetUpLocalMode(ModelName :str,FilePath:str):
     """ Load the Robot and Visualization objects add the robotParms attribute to Visualization
         Used for existing Implementation """
 
     RobotParams,Robot,RobotVisual = __GetLocalModelTypes(ModelName).values()
 
+    print(RobotParams)
+
     # Load from <<modelName>>.json the params of Robot 
     # and return the associate DTO
     robotParams = Configure.Get(section_type=RobotParams,
-                                modelName=ModelName,
-                                overrideModel=Override)
+                                filePath = FilePath)
 
     # Create instance of the Robot associated with the provides ModelName
     robot = Robot(robotParams)
@@ -90,8 +100,7 @@ def SetUpLocalMode(ModelName :str,Override:bool):
     # Load form <<modelName>>.json the params of Visualization
     # and return the associated DTO
     visual = RobotVisual(Configure.Get(section_type=VisualationParams,
-                                modelName=ModelName,
-                                overrideModel=Override))
+                                        filePath = FilePath))
 
     # Create an attribute self.robotParams = robotParamsDTOInstance
     __addAttribute(ClassType=Visualization,
@@ -105,9 +114,6 @@ def SetUpLocalMode(ModelName :str,Override:bool):
         "Robot" : robot,
         "Visual" : visual,
     }
-
-
-
 
 def Loop(Robot :Robot,
          Visual:Visualization,
@@ -142,16 +148,13 @@ def Robot2DStudioStart(Robot :RobotStudio,
                        SimulationStep :Callable[[Any],Any]):
     
     matplotlib.use(backend="TkAgg")
-    Loop(**SetUp(Robot,Visual),Init=SimulationInit,Step=SimulationStep)
+    CalledFrom = inspect.stack()[1]
+    Loop(**SetUp(Robot,Visual,GetJsonPath(CalledFrom)),Init=SimulationInit,Step=SimulationStep)
 
 
 def Robot2DStudioLocalModelStart(ModelName :str,
-                                 Overrride :bool,
                                  SimulationInit :Callable[[None],Any],
                                  SimulationStep :Callable[[Any],Any]):
     matplotlib.use(backend="TkAgg")
-    
-    #TODO : Make it to read from the user Location the .json
-    callFromUserFilePath = inspect.stack()[1]  # caller
-    print("Called from:", callFromUserFilePath.filename)
-    Loop(**SetUpLocalMode(ModelName=ModelName,Override=Overrride),Init=SimulationInit,Step=SimulationStep)
+    CalledFrom = inspect.stack()[1]
+    Loop(**SetUpLocalMode(ModelName=ModelName,FilePath=GetJsonPath(CalledFrom)),Init=SimulationInit,Step=SimulationStep)
