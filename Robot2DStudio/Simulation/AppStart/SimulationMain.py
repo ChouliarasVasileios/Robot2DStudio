@@ -10,6 +10,7 @@ from Robot2DStudio.Visualization.Base.Visualization import Visualization
 from Robot2DStudio.Visualization.Base.VisualationParams import VisualationParams
 import matplotlib
 import matplotlib.pyplot as plt
+import inspect
 
 @dataclass
 class RobotStudio:
@@ -149,4 +150,8 @@ def Robot2DStudioLocalModelStart(ModelName :str,
                                  SimulationInit :Callable[[None],Any],
                                  SimulationStep :Callable[[Any],Any]):
     matplotlib.use(backend="TkAgg")
+    
+    #TODO : Make it to read from the user Location the .json
+    callFromUserFilePath = inspect.stack()[1]  # caller
+    print("Called from:", callFromUserFilePath.filename)
     Loop(**SetUpLocalMode(ModelName=ModelName,Override=Overrride),Init=SimulationInit,Step=SimulationStep)

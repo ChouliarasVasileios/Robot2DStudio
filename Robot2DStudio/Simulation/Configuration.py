@@ -6,6 +6,8 @@ from Robot2DStudio.Services.PrintMessage.Warning import Warning
 from sys import exit
 
 from importlib.resources import files
+
+#TODO : The path has change under the Template folder
 localModelsDir = files("Robot2DStudio").joinpath("Robot/Models")
 
 appsettingsDir = files("Robot2DStudio").joinpath("Simulation/Configuration")
