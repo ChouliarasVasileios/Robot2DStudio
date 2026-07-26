@@ -1,37 +1,18 @@
 import json
-from pathlib import Path
-# import copy for deepcopy but propably will not needed ! 
 from typing import Generic,Type, TypeVar
 from Robot2DStudio.Services.PrintMessage.Warning import Warning
-from sys import exit
 
 T = TypeVar("T")
     
 class Configure(Generic[T]):
 
-
-    __localModelsDirectory :Path = Path("Robot2DStudio\\Robot\\Models")
-    
     #TODO: Make it dynamic not for just the level1
     # Now it works for Vis.Patches (jsonPath)
     @classmethod
-    def Get(cls :"Configure",section_type: Type[T],modelName:str|None = None, overrideModel:bool = False) -> Generic[T]:
-        """ 1 - Load the VisualizationParams and RobotParams that user create
-            It is their own Modeling using the Base Visualization and Robot Class
-            User Specify the Robot Class and the Visualization Class
-            So you read from a specific folder the .json that contains the user parameters
-            Location "Project/Configuration/<<userModelName>>.json"
-
-            2 - Load a Local Model (Visualization and Robot Params) that user specify by the Name
-                If user override the default settings read from their local location
-                Location 'Project/Configuration/Model/<<localModelName>>.json'
-        """
+    def Get(cls :"Configure",section_type: Type[T],filePath :str) -> Generic[T]:
 
         #TODO: Implement The Load a Local Model that user Need to override its Parameters
-
-        filename = Configure.__IsLocalModel(modelName)
-
-        data :dict = Configure.__read(filename)
+        data :dict = Configure.__read(filePath)
 
         params :dict = data.get(section_type.__name__,None)
 
@@ -70,7 +51,6 @@ class Configure(Generic[T]):
 
         return section_type(**params)
 
-
     @staticmethod
     def __IsNameLessObject(lst :list) -> bool:
         isTrueCount :int = 0
@@ -87,24 +67,13 @@ class Configure(Generic[T]):
         return True
     
     @staticmethod
-    def __read(filename :str | None) -> dict:
-        if not filename:
-            with open("Robot2DStudio\\Simulation\\Configuration\\appsetting.json","r") as f:
+    def __read(filePath :str | None) -> dict:
+        data = None
+        try :
+            with open(filePath,"r",encoding="utf-8") as f:
                 data = json.load(f)
+                return data
+        except Exception as e:
+                raise Exception(e) #TODO: Check logic
+        finally:
             return data
-            
-        with open(f"Robot2DStudio\\Simulation\\Configuration\\Models\\{filename}","r") as f:
-            data = json.load(f)
-        return data
-    
-    @classmethod
-    def __IsLocalModel(self,modelName :str) -> str|None:
-        for file in Configure.__localModelsDirectory.iterdir():
-            if(file.is_file() and ".py" in file.name and file.name.replace(".py","") == modelName):
-                return self.__toCamelCase(modelName) + ".json"
-        return None
-    
-    @staticmethod
-    def __toCamelCase(string :str) -> str:
-        string = string[0].lower() + string[1:]
-        return string

@@ -1,0 +1,34 @@
+from Robot2DStudio.Simulation.AppStart.SimulationMain import Robot2DStudioStart,RobotStudio,VisualStudio
+from numpy import ndarray
+import numpy as np
+from Robot2DStudio.Simulation.utils.integrators import Integrator
+
+from Types.{{localModelRobotParams}} import {{localModelRobotParams}}
+from Implementations.{{localModelRobot}} import {{localModelRobot}}
+
+from Robot2DStudio.Visualization.Base.VisualationParams import VisualationParams
+fromImplementations.{{localModelVisualRobot}} import {{localModelVisualRobot}}
+
+def SimulationInit():
+    # Add your Variable that initialize before the simulation Loop
+    x_target :ndarray = None # Add your target state here shape : (x,y) [Invalid (,y) or (x,)] 
+    x :ndarray = None # Add your initial state here shape : (x,y) [Invalid (,y) or (x,)]
+    u :ndarray = None # Add your initial contol signal here shape : (x,y) [Invalid (,y) or (x,)]
+    error = np.ones_like(x) 
+    return {"x":x,"u":u,"x_target":x_target,"error":error} # Add more variable if need them at Simulation Step like "varName" : var
+
+
+def SimulationStep(robot,step :float,x :ndarray,u:ndarray,x_target :ndarray,error :ndarray,stop :bool) -> dict:
+
+    # Add you Implementation of simulation loop
+
+    error = x - x_target # Calculates the error 
+    return {"x":x,"u":u,"x_target":x_target,"error":error,"stop":stop}
+
+
+
+
+Robot2DStudioStart(Robot = RobotStudio({{localModelRobotParams}},{{localModelRobot}}),
+                    Visual = VisualStudio(VisualationParams,{{localModelVisualRobot}}),
+                    SimulationInit = SimulationInit,
+                    SimulationStep = SimulationStep)

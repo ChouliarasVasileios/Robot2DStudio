@@ -1,1 +1,0 @@
-#TODO Make the setup for the pip install and the cli entry point to generate project layout
