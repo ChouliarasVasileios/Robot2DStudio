@@ -32,6 +32,5 @@ class Robot:
     def Dynamics(self,x :ndarray, u :ndarray) -> ndarray:
         Warning("Need Implementation Dynamics")
 
-
     def __repr__(self):
         return f"{self.__class__.__name__}(\n\tname='{ResultString(self.name)}'\n\t,N={ResultString(self.N)}\n\t,M={ResultString(self.M)}\n\t,JointConstaints={ResultString(self.JointsConstraints)})"

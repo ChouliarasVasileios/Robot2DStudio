@@ -1,6 +1,7 @@
 import numpy as np
 from numpy import ndarray
 from Robot2DStudio.Visualization.Base.Visualization import Visualization
+from Robot2DStudio.Services.Helpers.Helper import RotationMatrix2
 
 class PendulumVisual(Visualization):
     def __init__(self, visualationParams):
@@ -19,5 +20,5 @@ class PendulumVisual(Visualization):
         self.DrawPendulum(x)
 
     def DrawPendulum(self,x :ndarray):
-        
-        self.PendulumLine.set_data([0.0,-np.sin(x[0,0])*self.robotParams.l],[0.0, -np.cos(x[0,0]) * self.robotParams.l])
+        sim_pos = self.robotParams.l*RotationMatrix2.Rz(-np.pi/2) @ np.array([[np.cos(x[0,0])],[np.sin(x[0,0])]]) 
+        self.PendulumLine.set_data([0.0,sim_pos[0,0]],[0.0,sim_pos[1,0]])

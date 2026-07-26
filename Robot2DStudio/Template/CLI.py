@@ -1,5 +1,5 @@
 from Robot2DStudio.Simulation.AppStart.LocalModelsMapper.LocalModelMappper import Mapper
-from Robot2DStudio.Services.Helpers.Helper import Helper
+from Robot2DStudio.Services.Helpers.Helper import StringHelper
 from enum import Enum
 from dataclasses import dataclass
 import sys
