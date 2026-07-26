@@ -25,5 +25,5 @@ def Dispose(MapperVar:dict):
         print(modelstr + f"{modelTypes}\n")
     Result(f"Start Deleting Mapper size of: {MapperVar.__sizeof__()} bytes")
     MapperVar.clear()
-    Result("Dipose the Mapper after initialization")
+    Result("Dispose the Mapper after initialization")
     print(ResultString("="*150))

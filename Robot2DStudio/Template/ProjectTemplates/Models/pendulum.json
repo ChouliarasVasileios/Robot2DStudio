@@ -12,7 +12,7 @@
     },
     "PendulumParams":
     {
-        "Name": " Single Pendulum",
+        "Name": "Single Pendulum",
         "N":2,
         "M":1,
         "l":2.5,
