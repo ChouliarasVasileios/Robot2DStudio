@@ -5,6 +5,12 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "Robot2DStudio"
 version = "0.0.1"
+requires-python = ">= 3.13.2"
+dependencies = [
+    "numpy",
+    "pillow",
+    "matplotlib"
+]
 
 [project.scripts]
 robot2DStudio = "Robot2DStudio.__main__:CLI"
