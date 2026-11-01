@@ -2,10 +2,17 @@ import numpy as np
 from numpy import ndarray
 
 class StringHelper:
+
     @staticmethod
-    def ToCamelCase(string :str) -> str:
-        string = string[0].lower() + string[1:]
+    def ToLowerCaseLetter(string :str, index :int = 0) -> str:
+        string = string[index].lower() + string[index + 1:]
         return string
+    
+    @staticmethod
+    def ToUpperCaseLetter(string :str, index :int = 0) -> str:
+        string = string[index].upper() + string[index + 1:]
+        return string
+    
     
 class RotationMatrix3:
 

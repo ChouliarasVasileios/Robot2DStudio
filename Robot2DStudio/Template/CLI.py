@@ -295,15 +295,15 @@ def CreateProject(project :Project) -> str:
             FileName = "LocalModel.py",
 
             ConfigurationDirectory = _GetConfigurationDirectory(),
-            ConfigurationFileName = f"{project.LocalModelName.strip()}.json"
+            ConfigurationFileName = f"{StringHelper.ToLowerCaseLetter(project.LocalModelName.strip())}.json"
         )
 
         project.Destination = ProjectInfos(
             Directory = _GetWorkingProjectDirectory(project),
-            FileName = f"{project.LocalModelName.strip()}.py",
+            FileName = f"{StringHelper.ToUpperCaseLetter(project.LocalModelName.strip())}.py",
 
             ConfigurationDirectory = os.path.join(_GetWorkingProjectDirectory(project),"Configuration"),
-            ConfigurationFileName = f"{project.LocalModelName.strip()}.json"
+            ConfigurationFileName = f"{StringHelper.ToLowerCaseLetter(project.LocalModelName.strip())}.json"
         )
 
         return CreateLocalModelProject(project)
@@ -314,15 +314,15 @@ def CreateProject(project :Project) -> str:
             FileName = "OverrideLocalModel.txt",
 
             ConfigurationDirectory = _GetConfigurationDirectory(),
-            ConfigurationFileName = f"{project.LocalModelName.strip()}.json"
+            ConfigurationFileName = f"{StringHelper.ToLowerCaseLetter(project.LocalModelName.strip())}.json"
         )
 
         project.Destination = ProjectInfos(
             Directory = _GetWorkingProjectDirectory(project),
-            FileName = f"{project.LocalModelName.strip()}.py",
+            FileName = f"{StringHelper.ToUpperCaseLetter(project.LocalModelName.strip())}.py",
 
             ConfigurationDirectory = os.path.join(_GetWorkingProjectDirectory(project),"Configuration"),
-            ConfigurationFileName = f"{project.LocalModelName.strip()}.json"
+            ConfigurationFileName = f"{StringHelper.ToLowerCaseLetter(project.LocalModelName.strip())}.json"
         )
         return CreateOverrideLocalModeProject(project)
 
@@ -334,6 +334,7 @@ def LogMsg(msg :str):
     print(msg)
 
 def CLI():
+    print(os.getcwd())
     LogMsg(
     CreateProject(
     ValidateCommands(
@@ -344,5 +345,5 @@ def CLI():
         )
     )
     
-# if __name__ == "__main__":
-#     CLI()
+if __name__ == "__main__":
+    CLI()
