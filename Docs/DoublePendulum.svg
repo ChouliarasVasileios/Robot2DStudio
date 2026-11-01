@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 440" width="600" height="440" role="img" aria-labelledby="title desc">
+  <title id="title">Double pendulum at angles q1 and q2</title>
+  <desc id="desc">Two massless links in series with point masses at their ends. The angle q1 is measured counterclockwise from the downward vertical, and q2 is measured from the direction of the first link. Torques tau1 and tau2 act at the joints, and gravity acts downward on each mass.</desc>
+  <defs>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#1f6feb"/>
+    </marker>
+    <marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#c9302c"/>
+    </marker>
+    <marker id="arrow-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#555555"/>
+    </marker>
+  </defs>
+
+  <rect width="600" height="440" fill="#ffffff"/>
+
+  <g font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#222222">
+    <!-- World axes -->
+    <line x1="50" y1="405" x2="130" y2="405" stroke="#555555" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+    <line x1="50" y1="405" x2="50" y2="325" stroke="#555555" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+    <text x="138" y="411">x</text>
+    <text x="44" y="317">y</text>
+
+    <!-- Reference lines and angles -->
+    <line x1="240" y1="70" x2="240" y2="280" stroke="#777777" stroke-width="1.5" stroke-dasharray="6 5"/>
+    <path d="M240 140 A70 70 0 0 0 275 130.6" fill="none" stroke="#222222" stroke-width="1.5"/>
+    <text x="250" y="170" font-style="italic" font-size="18">q₁</text>
+
+    <line x1="325" y1="217.2" x2="385" y2="321.1" stroke="#777777" stroke-width="1.5" stroke-dasharray="6 5"/>
+    <path d="M357.5 273.5 A65 65 0 0 0 383.9 244.7" fill="none" stroke="#222222" stroke-width="1.5"/>
+    <text x="388" y="290" font-style="italic" font-size="18">q₂</text>
+
+    <!-- Links -->
+    <line x1="240" y1="70" x2="325" y2="217.2" stroke="#222222" stroke-width="5" stroke-linecap="round"/>
+    <line x1="325" y1="217.2" x2="460.9" y2="280.6" stroke="#222222" stroke-width="5" stroke-linecap="round"/>
+    <text x="298" y="134" font-style="italic">l₁</text>
+    <text x="400" y="232" font-style="italic">l₂</text>
+
+    <!-- Input torques -->
+    <path d="M268 70 A28 28 0 0 0 212 70" fill="none" stroke="#1f6feb" stroke-width="3" marker-end="url(#arrow-blue)"/>
+    <text x="240" y="30" text-anchor="middle" fill="#1f6feb" font-weight="bold">τ₁</text>
+    <path d="M351 203 A30 30 0 0 0 325 187" fill="none" stroke="#1f6feb" stroke-width="3" marker-end="url(#arrow-blue)"/>
+    <text x="352" y="184" fill="#1f6feb" font-weight="bold">τ₂</text>
+
+    <!-- Gravity -->
+    <line x1="325" y1="217.2" x2="325" y2="295" stroke="#c9302c" stroke-width="3" marker-end="url(#arrow-red)"/>
+    <text x="316" y="296" text-anchor="end" fill="#c9302c" font-weight="bold">m₁·g</text>
+    <line x1="460.9" y1="280.6" x2="460.9" y2="358" stroke="#c9302c" stroke-width="3" marker-end="url(#arrow-red)"/>
+    <text x="471" y="356" fill="#c9302c" font-weight="bold">m₂·g</text>
+
+    <!-- Joints and masses -->
+    <circle cx="240" cy="70" r="6" fill="#222222"/>
+    <circle cx="325" cy="217.2" r="13" fill="#222222"/>
+    <circle cx="460.9" cy="280.6" r="13" fill="#222222"/>
+    <text x="303" y="236" text-anchor="end" font-style="italic">m₁</text>
+    <text x="482" y="286" font-style="italic">m₂</text>
+  </g>
+</svg>

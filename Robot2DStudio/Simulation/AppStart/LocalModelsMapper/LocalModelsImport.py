@@ -7,3 +7,6 @@ from Robot2DStudio.Visualization.Models.Pendulum import PendulumVisual
 from Robot2DStudio.Robot.Models.DoublePendulumParams import DoublePendulumParams
 from Robot2DStudio.Robot.Models.DoublePendulum import DoublePendulum
 from Robot2DStudio.Visualization.Models.DoublePendulum import DoublePendulumVisual
+from Robot2DStudio.Robot.Models.Drone2DParams import Drone2DParams
+from Robot2DStudio.Robot.Models.Drone2D import Drone2D
+from Robot2DStudio.Visualization.Models.Drone2D import Drone2DVisual

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 420" width="560" height="420" role="img" aria-labelledby="title desc">
+  <title id="title">Pendulum at angle theta</title>
+  <desc id="desc">A massless link of length l hangs from a pivot with a mass m at its end. The angle theta is measured counterclockwise from the downward vertical. A torque tau acts at the pivot and gravity acts downward on the mass.</desc>
+  <defs>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#1f6feb"/>
+    </marker>
+    <marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#c9302c"/>
+    </marker>
+    <marker id="arrow-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#555555"/>
+    </marker>
+  </defs>
+
+  <rect width="560" height="420" fill="#ffffff"/>
+
+  <g font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#222222">
+    <!-- World axes -->
+    <line x1="50" y1="385" x2="130" y2="385" stroke="#555555" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+    <line x1="50" y1="385" x2="50" y2="305" stroke="#555555" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+    <text x="138" y="391">x</text>
+    <text x="44" y="297">y</text>
+
+    <!-- Vertical reference and angle -->
+    <line x1="260" y1="90" x2="260" y2="340" stroke="#777777" stroke-width="1.5" stroke-dasharray="6 5"/>
+    <path d="M260 160 A70 70 0 0 0 300.2 147.3" fill="none" stroke="#222222" stroke-width="1.5"/>
+    <text x="280" y="184" font-style="italic" font-size="19">θ</text>
+
+    <!-- Link -->
+    <line x1="260" y1="90" x2="386.2" y2="270.2" stroke="#222222" stroke-width="5" stroke-linecap="round"/>
+    <text x="342" y="170" font-style="italic">l</text>
+
+    <!-- Input torque -->
+    <path d="M288 90 A28 28 0 0 0 232 90" fill="none" stroke="#1f6feb" stroke-width="3" marker-end="url(#arrow-blue)"/>
+    <text x="260" y="50" text-anchor="middle" fill="#1f6feb" font-weight="bold">τ</text>
+
+    <!-- Gravity -->
+    <line x1="386.2" y1="270.2" x2="386.2" y2="348" stroke="#c9302c" stroke-width="3" marker-end="url(#arrow-red)"/>
+    <text x="396" y="346" fill="#c9302c" font-weight="bold">m·g</text>
+
+    <!-- Pivot and mass -->
+    <circle cx="260" cy="90" r="6" fill="#222222"/>
+    <circle cx="386.2" cy="270.2" r="14" fill="#222222"/>
+    <text x="408" y="276" font-style="italic">m</text>
+  </g>
+</svg>

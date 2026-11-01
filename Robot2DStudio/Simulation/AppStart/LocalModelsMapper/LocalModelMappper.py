@@ -11,7 +11,8 @@ def Mapper()->dict[RobotParams,Robot,Visualization]:
     return{
         "DifferentialDriveRobot":(DifferentialDriveRobotParams,DifferentialDriveRobot,DiffrentialDriveRobotVisual),
         "Pendulum": (PendulumParams,Pendulum,PendulumVisual),
-        "DoublePendulum": (DoublePendulumParams,DoublePendulum,DoublePendulumVisual)
+        "DoublePendulum": (DoublePendulumParams,DoublePendulum,DoublePendulumVisual),
+        "Drone2D": (Drone2DParams,Drone2D,Drone2DVisual)
     }
 
 def Dispose(MapperVar:dict):

@@ -9,15 +9,25 @@
             // "module":"Robot2DStudio.Simulation.AppStart.UserExampleLocalModel",
             // "module": "Robot2DStudio.Simulation.AppStart.UserExampleUse",
             // "module": "Robot2DStudio.Simulation.AppStart.TestEnv",
-            "module":"Robot2DStudio.Template.CLI",
+            // "module":"Robot2DStudio.Template.CLI",
+            "module": "Robot2DStudio.Simulation.AppStart.UserExampleDrone2D",
             "args":[
                 "--newProject",
                 "ProjectName",
                 "--useModel",
-                "pendulum",
+                "Pendulum",
                 // "--overrideModel"
             ],
-            "console": "integratedTerminal",
+            // "console": "integratedTerminal",
+            "justMyCode": false,
+            // "linux": {
+            //     "python": "${workspaceFolder}/.venv/bin/python"
+            // }
+        },
+        {
+            "name": "Debug UserExampleDrone2D",
+            "type": "debugpy",
+            "request": "launch",
             "justMyCode": false
         }
     ]

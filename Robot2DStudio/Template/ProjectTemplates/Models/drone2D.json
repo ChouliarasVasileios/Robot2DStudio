@@ -1,0 +1,27 @@
+{
+    "VisualationParams":
+    {
+        "title":"Drone2D Simulation",
+        "xlabel":"x-axis",
+        "ylabel":"y-axis",
+        "grid_on":true,
+        "xlim": [-3,3],
+        "ylim": [-3,3],
+        "step": 0.05,
+        "Patches": null
+    },
+    "Drone2DParams":
+    {
+        "Name": "Drone2D",
+        "N":6,
+        "M":2,
+        "l":1.5,
+        "m1":0.2,
+        "m2":0.2,
+        "g":9.81,
+        "rho" :1.225,
+        "cd" :1.2,
+        "Ay" :0.75,
+        "Ax" :0.15
+    }
+}

@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 420" width="560" height="420" role="img" aria-labelledby="title desc">
+  <title id="title">Differential drive robot at heading theta</title>
+  <desc id="desc">Top view of a robot with two wheels a distance s apart, heading at angle theta from the horizontal. The left and right wheels turn at angular velocities omega L and omega R, and the robot moves forward at speed v.</desc>
+  <defs>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#1f6feb"/>
+    </marker>
+    <marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#c9302c"/>
+    </marker>
+    <marker id="arrow-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#555555"/>
+    </marker>
+    <marker id="tick" viewBox="0 0 2 10" refX="1" refY="5" markerWidth="2" markerHeight="10" orient="auto">
+      <path d="M0 0 H2 V10 H0 z" fill="#777777"/>
+    </marker>
+  </defs>
+
+  <rect width="560" height="420" fill="#ffffff"/>
+
+  <g font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#222222">
+    <!-- World axes -->
+    <line x1="50" y1="385" x2="130" y2="385" stroke="#555555" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+    <line x1="50" y1="385" x2="50" y2="305" stroke="#555555" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+    <text x="138" y="391">x</text>
+    <text x="44" y="297">y</text>
+
+    <!-- Robot body and wheels -->
+    <g transform="translate(280 230) rotate(-30)">
+      <rect x="-85" y="-45" width="170" height="90" rx="6" fill="#e8eef7" stroke="#222222" stroke-width="2"/>
+      <rect x="-35" y="-63" width="70" height="16" rx="3" fill="#222222"/>
+      <rect x="-35" y="47" width="70" height="16" rx="3" fill="#222222"/>
+      <line x1="0" y1="-55" x2="0" y2="55" stroke="#777777" stroke-width="1.5" stroke-dasharray="4 4"/>
+    </g>
+
+    <!-- Horizontal reference and heading -->
+    <line x1="280" y1="230" x2="465" y2="230" stroke="#777777" stroke-width="1.5" stroke-dasharray="6 5"/>
+    <path d="M360 230 A80 80 0 0 0 349.3 190" fill="none" stroke="#222222" stroke-width="1.5"/>
+    <text x="368" y="219" font-style="italic" font-size="19">θ</text>
+
+    <!-- Forward velocity -->
+    <line x1="280" y1="230" x2="418.6" y2="150" stroke="#222222" stroke-width="3" marker-end="url(#arrow-gray)"/>
+    <text x="426" y="146" font-style="italic" font-weight="bold">v</text>
+
+    <!-- Wheel inputs -->
+    <line x1="189" y1="192.5" x2="275.6" y2="142.5" stroke="#1f6feb" stroke-width="3" marker-end="url(#arrow-blue)"/>
+    <text x="282" y="136" fill="#1f6feb" font-weight="bold">ωL (left)</text>
+    <line x1="267" y1="327.5" x2="353.6" y2="277.5" stroke="#1f6feb" stroke-width="3" marker-end="url(#arrow-blue)"/>
+    <text x="360" y="280" fill="#1f6feb" font-weight="bold">ωR (right)</text>
+
+    <!-- Wheel spacing -->
+    <line x1="157.2" y1="237.4" x2="212.2" y2="332.6" stroke="#777777" stroke-width="1.5" marker-start="url(#tick)" marker-end="url(#tick)"/>
+    <text x="164" y="294" font-style="italic">s</text>
+
+    <!-- Center -->
+    <circle cx="280" cy="230" r="5" fill="#222222"/>
+    <text x="262" y="256" text-anchor="middle">(x, y)</text>
+  </g>
+</svg>
