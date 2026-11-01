@@ -68,31 +68,39 @@ $$
 
 ### Translational drag
 
-Drag is calculated separately for each axis. The area the air sees depends on the tilt:
+The air only pushes on what it meets, so the drag depends on the direction of motion compared with the body. Moving along the body, the air meets the thin side. Moving across it, the air meets the full top.
+
+First, split the velocity into those two directions:
 
 $$
-S_x(\varphi) = A_x|\cos\varphi| + A_y|\sin\varphi|
+v_\parallel = \dot{x}\cos\varphi + \dot{y}\sin\varphi
 \qquad
-S_y(\varphi) = A_y|\cos\varphi| + A_x|\sin\varphi|
+v_\perp = -\dot{x}\sin\varphi + \dot{y}\cos\varphi
 $$
 
-The drag force opposes the velocity. Using $|v|\,v$ instead of $v^2$ keeps its direction:
+Each speed then works on the area it meets, which gives the drag coefficient:
 
 $$
-F_{drag,x} = -\tfrac{1}{2}\rho C_d S_x(\varphi)|\dot{x}|\dot{x}
+k = \tfrac{1}{2}\rho C_d \left(A_y|v_\perp| + A_x|v_\parallel|\right)
+$$
+
+The drag force is opposite to the velocity:
+
+$$
+F_{drag,x} = -k\,\dot{x}
 \qquad
-F_{drag,y} = -\tfrac{1}{2}\rho C_d S_y(\varphi)|\dot{y}|\dot{y}
+F_{drag,y} = -k\,\dot{y}
+$$
+
+When the drone moves straight along one world axis, this is the same as the area the air sees in that direction. For example, moving only along $y$:
+
+$$
+k = \tfrac{1}{2}\rho C_d|\dot{y}|\left(A_y|\cos\varphi| + A_x|\sin\varphi|\right)
 $$
 
 ### Rotational drag
 
-Rotation moves each end perpendicular to the body, so only the top area resists it. First, find the body's velocity in that direction:
-
-$$
-v_\perp = -\dot{x}\sin\varphi + \dot{y}\cos\varphi
-$$
-
-Rotation adds $\frac{l}{2}\dot{\varphi}$ to the right end and subtracts it from the left end:
+Rotation moves each end perpendicular to the body, so only the top area resists it. Rotation adds $\frac{l}{2}\dot{\varphi}$ to the speed $v_\perp$ at the right end and subtracts it at the left end:
 
 $$
 v_R = v_\perp + \frac{l}{2}\dot{\varphi}
@@ -122,11 +130,11 @@ This torque always opposes the spin, and it gets stronger when the drone also mo
 Newton's second law for translation and rotation gives:
 
 $$
-\ddot{x} = \frac{-(F_1 + F_2)\sin\varphi - \tfrac{1}{2}\rho C_d S_x(\varphi)|\dot{x}|\dot{x}}{m}
+\ddot{x} = \frac{-(F_1 + F_2)\sin\varphi - k\,\dot{x}}{m}
 $$
 
 $$
-\ddot{y} = \frac{(F_1 + F_2)\cos\varphi - \tfrac{1}{2}\rho C_d S_y(\varphi)|\dot{y}|\dot{y}}{m} - g
+\ddot{y} = \frac{(F_1 + F_2)\cos\varphi - k\,\dot{y}}{m} - g
 $$
 
 $$
@@ -148,28 +156,20 @@ Each term goes where it is multiplied:
 | Term | Multiplies | Goes in |
 |---|---|---|
 | Velocities in the top rows | State | $A$ |
-| Translational drag coefficients | State | $A$ |
+| Translational drag coefficient | State | $A$ |
 | Thrust and rotor torque | Input | $B$ |
 | Gravity | Nothing | $E$ |
 | Rotational drag, $\tau_{drag}/I$ | Calculated directly | $E$ |
 
-Using the coefficients:
-
-$$
-a_x = \frac{\tfrac{1}{2}\rho C_d S_x(\varphi)|\dot{x}|}{m}
-\qquad
-a_y = \frac{\tfrac{1}{2}\rho C_d S_y(\varphi)|\dot{y}|}{m}
-$$
-
-the matrices are:
+The matrices are:
 
 $$
 A = \begin{bmatrix}
 0 & 0 & 0 & 1 & 0 & 0 \\
 0 & 0 & 0 & 0 & 1 & 0 \\
 0 & 0 & 0 & 0 & 0 & 1 \\
-0 & 0 & 0 & -a_x & 0 & 0 \\
-0 & 0 & 0 & 0 & -a_y & 0 \\
+0 & 0 & 0 & -k/m & 0 & 0 \\
+0 & 0 & 0 & 0 & -k/m & 0 \\
 0 & 0 & 0 & 0 & 0 & 0
 \end{bmatrix}
 $$
@@ -197,7 +197,7 @@ $$
 
 ## Limitations
 
-- **Diagonal motion:** drag is calculated per axis, so it can't tell moving edge-on from moving face-on at $\varphi = \pm 45°$.
+- **Drag direction:** the translational drag is always opposite to the velocity. A real tilted surface also gets a sideways push, like lift on a wing, which is not modeled.
 - **Unequal masses:** the model is only valid for $m_1 = m_2$, because otherwise the center of mass moves away from the middle.
 - **Rotor effects:** rotor airflow and motor response are not modeled.
 - **Drag coefficient:** a single $C_d$ is used for every direction. It is an approximation and would need tuning against real data.

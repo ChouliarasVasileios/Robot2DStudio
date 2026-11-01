@@ -1,5 +1,4 @@
 import numpy as np
-from math import cos,sin
 from numpy import ndarray
 from Robot2DStudio.Robot.Base.Robot import Robot
 from Robot2DStudio.Robot.Models.Drone2DParams import Drone2DParams 
@@ -43,9 +42,6 @@ class Drone2D(Robot):
     def __Fd(self,A :float,vel :float) -> str:
         return (1/2)*self.rho*self.cd*A*vel
 
-    def __A(self,face :float,edge :float,phi :float) -> float:
-        return face*abs(cos(phi)) + edge*abs(sin(phi))
-
     def Dynamics(self, x :ndarray, u :ndarray) -> ndarray:
         """
         Input:
@@ -55,13 +51,14 @@ class Drone2D(Robot):
         Output:
             d(State)/dt = [x1_dot,x2_dot,x3_dot,x4_dot,x5_dot,x6_dot].T -> [x_dot,y_dot,phi_dot,x_ddot,y_ddot,phi_ddot].T 
         """
-        fy = self.__Fd(self.__A(self.Ay,self.Ax,x[2,0]),abs(x[4,0]))
-        fx = self.__Fd(self.__A(self.Ax,self.Ay,x[2,0]),abs(x[3,0]))
-
         s_phi = np.sin(x[2,0])
         c_phi = np.cos(x[2,0])
 
+        # Velocity along the body meets the side area, across the body meets the top area
+        v_par = x[3,0]*c_phi + x[4,0]*s_phi
         v_perp = -x[3,0]*s_phi + x[4,0]*c_phi
+
+        k = self.__Fd(self.Ay,abs(v_perp)) + self.__Fd(self.Ax,abs(v_par))
         v_R = v_perp + (self.l/2)*x[5,0]
         v_L = v_perp - (self.l/2)*x[5,0]
 
@@ -73,8 +70,8 @@ class Drone2D(Robot):
             [0,0,0,1,0,0],
             [0,0,0,0,1,0],
             [0,0,0,0,0,1],
-            [0,0,0,-fx/self.mTotal,0,0],
-            [0,0,0,0,-fy/self.mTotal,0],
+            [0,0,0,-k/self.mTotal,0,0],
+            [0,0,0,0,-k/self.mTotal,0],
             [0,0,0,0,0,0]
             ])
 
